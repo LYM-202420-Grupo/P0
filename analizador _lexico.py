@@ -54,58 +54,35 @@ def t_error(t):
     
 def t_newline(t):
     r'\n+'
-    t.lexer.lineno += len(t.value)
-    
+    t.lexer.lineno += len(t.value)    
+
 lexer = lex.lex()
 
-data = '''
- EXEC {
- if not(blocked?(left)) then { turnToMy(left); walk(1); } else {nop;}
-    fi
- }
- 
- EXEC {
-    safeExe(walk(1));
-    moves(left,left, forward, right, back);
- }
- 
- NEW VAR rotate= 3
- NEW MACRO foo (c, p)
- {  drop(c);
-    letgo(p);
-    walk(rotate);
-}
-EXEC { foo (1 ,3) }
-NEW VAR one= 1
-NEW MACRO goend ()
-{
-    if not (blocked?(front))
-    then { move(one); goend(); }
-    else { nop; }
-    fi;
-}
-
-
-NEW MACRO fill ()
-{
-repeat roomForChips times
-{ if not (zero?(myChips)) { drop(1);} else { nop; } fi ;} ;
-}
-NEW MACRO fill1 ()
-{
-while not zero?(rooomForChips)
-{ if not (zero?(myChips)) { drop(1);} else { nop; } fi ;
-} ;
-}
-NEW MACRO grabAll ()
-{ grab (balloonsHere):
-}
-'''
+def leer_archivo(archivo):
     
-lexer.input(data)
+    with open(archivo, 'r') as file:
+        data = file.read()
+        return data
 
-while True:
-    tok = lexer.token()
-    if not tok:
-        break
-    print(tok)
+def analyze_file(filename):
+    
+    data = leer_archivo(filename)
+    lexer.input(data)
+    
+    while True:
+        tok = lexer.token()
+        if not tok:
+            break
+        print (tok)
+
+if __name__ == '__main__':
+    archivo = 'code-examples.txt'
+    if os.path.exists(archivo):
+        resultado = analyze_file(archivo)
+        if resultado:
+            print('Si, el codigo es valido.')
+        else:
+            print('No, el codigo tiene errores')
+    else:
+        print('El archivo {0} no ha sido encontrado.'.format(archivo))
+    
