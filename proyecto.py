@@ -5,7 +5,7 @@ import os
 import sys
 
 #LISTA DE TOKENS.
-tokens = ['NUMBER', 'IDENTIFIER', 'ASSIGN', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'SEMICOLON', 'COMMA', 'PLUS', 'COLON']
+tokens = ['NUMBER', 'IDENTIFIER', 'ASSIGN', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'SEMICOLON', 'COMMA', 'PLUS', 'COLON', 'QUESTION']
  
 #PALABRAS RESERVADAS.
 reserved = {'exec': 'EXEC', 'new': 'NEW', 'var': 'VAR', 'macro': 'MACRO', 'if': 'IF', 'then': 'THEN', 'else': 'ELSE', 'fi': 'FI', 'do': 'DO', 'od': 'OD', 'rep': 'REP', 'times': 'TIMES',
@@ -25,6 +25,7 @@ t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_ASSIGN = r'='
 t_COLON = r':'
+t_QUESTION = r'\?'
 
 #CONDICIONES ESPECIFICAS.
 t_IS_BLOCKED = r'isBlocked\?'
@@ -48,7 +49,7 @@ def t_NUMBER(t):
     return t
 
 def t_error(t):
-    print("caracter ilegal '{t.value[0]}' en la linea {t.lineno}")
+    print("caracter ilegal '%s" % t.value[0])
     t.lexer.skip(1)
     
 def t_newline(t):
