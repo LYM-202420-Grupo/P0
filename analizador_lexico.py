@@ -1,7 +1,6 @@
 import ply.lex as lex 
-import re 
+import ply.yacc as yacc
 import os
-import sys
 
 #LISTA DE TOKENS.
 tokens = ['MOVE','TURN_RIGHT' ,'DROP_CHIP' ,'PLACE_BALLOON' ,'PICKUP_CHIP' ,'GRAB_BALLOON' ,'POP_BALLOON' , 'GOTO' ,'NEW_VAR' ,'NUMBER', 'ID','EQUALS' ,'NEW_MACRO', 
@@ -63,6 +62,60 @@ def t_error(t):
 
 #Construye el lexer. 
 lexer = lex.lex()
+
+# DEFINIR LAS REGLAS GRAMATICALES
+def p_program_exec(p):
+    '''program : EXEC block'''
+    pass
+
+def p_program_new_var(p):
+    '''program : NEW VAR ID ASSIGN NUMBER'''
+    pass
+
+def p_program_new_macro(p):
+    '''program : NEW MACRO ID LPAREN param_list RPAREN block'''
+    pass
+
+def p_block(p):
+    '''block : LBRACE stmt_list RBRACE'''
+    pass
+
+def p_stmt_list(p):
+    '''stmt_list : stmt SEMICOLON stmt_list
+                 | stmt SEMICOLON'''
+    pass
+
+def p_stmt(p):
+    '''stmt : IF condition THEN block ELSE block FI
+            | WALK LPAREN NUMBER RPAREN
+            | DROP LPAREN NUMBER RPAREN
+            | ID LPAREN param_list RPAREN
+            | NOP'''
+    pass
+
+def p_param_list(p):
+    '''param_list : ID COMMA param_list
+                  | ID
+                  | empty'''
+    pass
+
+def p_condition(p):
+    '''condition : NOT LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN
+                 | IS_BLOCKED LPAREN ID RPAREN'''
+    pass
+
+def p_empty(p):
+    '''empty :'''
+    pass
+
+def p_error(p):
+    if p:
+        print(f"Error de sintaxis en '{p.value}'")
+    else:
+        print("Error de sintaxis al final del archivo")
+
+# COMPILAR EL PARSER.
+parser = yacc.yacc()
 
 #Esta funcion lee el archivo.
 def leer_archivo(archivo):
