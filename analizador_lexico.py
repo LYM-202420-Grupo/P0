@@ -4,7 +4,7 @@ import os
 
 #LISTA DE TOKENS.
 tokens = ['MOVE','TURN_RIGHT' ,'DROP_CHIP' ,'PLACE_BALLOON' ,'PICKUP_CHIP' ,'GRAB_BALLOON' ,'POP_BALLOON' , 'GOTO' ,'NEW_VAR' ,'NUMBER', 'ID','EQUALS' ,'NEW_MACRO', 
-          'ASSIGN', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'SEMICOLON', 'COMMA', 'PLUS', 'QUESTION']
+          'ASSIGN', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'SEMICOLON', 'COMMA', 'PLUS', 'QUESTION', 'REPEAT']
  
 #PALABRAS RESERVADAS.
 reserved = {'exec': 'EXEC', 'new': 'NEW', 'var': 'VAR', 'macro': 'MACRO', 'if': 'IF', 'then': 'THEN', 'else': 'ELSE', 'fi': 'FI', 'do': 'DO', 'od': 'OD', 'rep': 'REP', 'times': 'TIMES',
@@ -12,8 +12,6 @@ reserved = {'exec': 'EXEC', 'new': 'NEW', 'var': 'VAR', 'macro': 'MACRO', 'if': 
             'nop': 'NOP', 'safeexe': 'SAFE_EXE', 'isblocked': 'IS_BLOCKED', 'isfacing': 'IS_FACING', 'zero': 'ZERO', 'not': 'NOT'}
 
 tokens = tokens + list(reserved.values())
-
-t_ignore = ' \t'
 
 #DEFINIFR EXPRESIONES REGULARES SIMPLES.
 t_SEMICOLON = r';'
@@ -24,12 +22,28 @@ t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_ASSIGN = r'='
 t_QUESTION = r'\?'
+t_DO = r'do'
+t_OD = r'od'
+
+#Ignorar
+t_ignore = ' \t'
 
 #CONDICIONES ESPECIFICAS.
 t_IS_BLOCKED = r'blocked\?'
 t_IS_FACING =  r'facing\?'
 t_ZERO = r'zero\?'
 t_NOT = r'not'
+t_DROP_CHIP = r'drop_chip'
+t_GOTO = r'goto'
+t_GRAB_BALLOON = r'grab_balloon'
+t_NEW_MACRO = r'new_macro'
+t_NEW_VAR = r'new_var'
+t_PICK = r'pick'
+t_PICKUP_CHIP = r'pickup_chip'
+t_PLACE_BALLOON = r'place_balloon'
+t_REP = r'rep'
+t_TURN_RIGHT = r'turn_right'
+t_TURN_TO_THE = r'turn_to_the'
 
 #Reconocimiento de numeros.
 def t_NUMBER(t):
@@ -40,8 +54,8 @@ def t_NUMBER(t):
 #Identificadores y palabras reservadas.
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
-    t.value = reserved.get(t.value.lower(), 'ID')
-    t.type = t.value
+    t.value = t.value.lower()
+    t.type = reserved.get(t.value, 'ID')
     return t
 
 #Ignorar comentarios.
@@ -56,7 +70,7 @@ def t_newline(t):
     
 #Manejo de errores.    
 def t_error(t):
-    print("caracter ilegal '%s" % t.value[0])
+    print("caracter ilegal {0}" .format(t.value[0]))
     t.lexer.skip(1)
 
 #Construye el lexer. 
@@ -87,11 +101,22 @@ def p_stmt_list(p):
 def p_stmt(p):
     '''stmt : IF condition THEN block ELSE block FI
             | WALK LPAREN NUMBER RPAREN
+            | JUMP LPAREN NUMBER RPAREN
             | DROP LPAREN NUMBER RPAREN
+            | MOVE LPAREN NUMBER RPAREN
+            | LET_GO LPAREN NUMBER RPAREN
+            | POP LPAREN NUMBER RPAREN
             | TURN_TO_MY LPAREN ID RPAREN
+            | GRAB LPAREN ID RPAREN 
             | SAFE_EXE LPAREN stmt RPAREN
+            | MOVES LPAREN param_list RPAREN
             | ID LPAREN param_list RPAREN
+            | REPEAT NUMBER TIMES block
             | NOP'''
+    pass
+
+def p_stmt_do_while(p):
+    '''stmt : DO block OD'''
     pass
 
 def p_param_list(p):
@@ -114,7 +139,7 @@ def p_empty(p):
 
 def p_error(p):
     if p:
-        print(f"Error de sintaxis en '{p.value}'")
+        print(f"Error de sintaxis en '{p.value}', linea {p.lineno}")
     else:
         print("Error de sintaxis al final del archivo")
 
@@ -147,6 +172,7 @@ def analyze_file(filename):
     else:
         return False
 
+#MAIN METHOD
 if __name__ == '__main__':
     archivo = 'code-examples.txt'
     if os.path.exists(archivo):

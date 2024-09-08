@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ASSIGN COLON COMMA DO DROP DROP_CHIP ELSE EQUALS EXEC FI GOTO GRAB GRAB_BALLOON ID IF IS_BLOCKED IS_FACING JUMP LBRACE LET_GO LPAREN MACRO MOVE MOVES NEW NEW_MACRO NEW_VAR NOP NOT NUMBER OD PICK PICKUP_CHIP PLACE_BALLOON PLUS POP POP_BALLOON QUESTION RBRACE REP RPAREN SAFE_EXE SEMICOLON THEN TIMES TURN_RIGHT TURN_TO_MY TURN_TO_THE VAR WALK ZEROprogram : EXEC blockprogram : NEW VAR ID ASSIGN NUMBERprogram : NEW MACRO ID LPAREN param_list RPAREN blockblock : LBRACE stmt_list RBRACEstmt_list : stmt SEMICOLON stmt_list\n                 | stmt SEMICOLONstmt : IF condition THEN block ELSE block FI\n            | WALK LPAREN NUMBER RPAREN\n            | DROP LPAREN NUMBER RPAREN\n            | TURN_TO_MY LPAREN ID RPAREN\n            | SAFE_EXE LPAREN stmt RPAREN\n            | ID LPAREN param_list RPAREN\n            | NOPparam_list : ID COMMA param_list\n                  | ID\n                  | emptycondition : NOT LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN\n                 | NOT LPAREN ZERO QUESTION LPAREN ID RPAREN RPAREN\n                 | IS_BLOCKED LPAREN ID RPAREN\n                 | ZERO QUESTION LPAREN ID RPAREN\n                 | IS_FACING LPAREN ID RPARENempty :'
+_lr_signature = 'ASSIGN COMMA DO DROP DROP_CHIP ELSE EQUALS EXEC FI GOTO GRAB GRAB_BALLOON ID IF IS_BLOCKED IS_FACING JUMP LBRACE LET_GO LPAREN MACRO MOVE MOVES NEW NEW_MACRO NEW_VAR NOP NOT NUMBER OD PICK PICKUP_CHIP PLACE_BALLOON PLUS POP POP_BALLOON QUESTION RBRACE REP REPEAT RPAREN SAFE_EXE SEMICOLON THEN TIMES TURN_RIGHT TURN_TO_MY TURN_TO_THE VAR WALK ZEROprogram : EXEC blockprogram : NEW VAR ID ASSIGN NUMBERprogram : NEW MACRO ID LPAREN param_list RPAREN blockblock : LBRACE stmt_list RBRACEstmt_list : stmt SEMICOLON stmt_list\n                 | stmt SEMICOLONstmt : IF condition THEN block ELSE block FI\n            | WALK LPAREN NUMBER RPAREN\n            | JUMP LPAREN NUMBER RPAREN\n            | DROP LPAREN NUMBER RPAREN\n            | MOVE LPAREN NUMBER RPAREN\n            | LET_GO LPAREN NUMBER RPAREN\n            | POP LPAREN NUMBER RPAREN\n            | TURN_TO_MY LPAREN ID RPAREN\n            | GRAB LPAREN ID RPAREN \n            | SAFE_EXE LPAREN stmt RPAREN\n            | MOVES LPAREN param_list RPAREN\n            | ID LPAREN param_list RPAREN\n            | REPEAT NUMBER TIMES block\n            | NOPstmt : DO block ODparam_list : ID COMMA param_list\n                  | ID\n                  | emptycondition : NOT LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN\n                 | NOT LPAREN ZERO QUESTION LPAREN ID RPAREN RPAREN\n                 | IS_BLOCKED LPAREN ID RPAREN\n                 | ZERO QUESTION LPAREN ID RPAREN\n                 | IS_FACING LPAREN ID RPARENempty :'
     
-_lr_action_items = {'EXEC':([0,],[2,]),'NEW':([0,],[3,]),'$end':([1,4,19,46,68,],[0,-1,-4,-2,-3,]),'LBRACE':([2,34,60,61,],[5,5,5,5,]),'VAR':([3,],[6,]),'MACRO':([3,],[7,]),'IF':([5,20,30,],[10,10,10,]),'WALK':([5,20,30,],[11,11,11,]),'DROP':([5,20,30,],[12,12,12,]),'TURN_TO_MY':([5,20,30,],[13,13,13,]),'SAFE_EXE':([5,20,30,],[15,15,15,]),'ID':([5,6,7,20,28,29,30,32,36,38,52,57,62,71,],[14,17,18,14,41,42,14,42,51,53,65,42,70,75,]),'NOP':([5,20,30,],[16,16,16,]),'RBRACE':([8,20,33,],[19,-6,-5,]),'SEMICOLON':([9,16,54,55,56,58,59,73,],[20,-13,-8,-9,-10,-12,-11,-7,]),'NOT':([10,],[22,]),'IS_BLOCKED':([10,35,],[23,49,]),'ZERO':([10,35,],[24,50,]),'IS_FACING':([10,],[25,]),'LPAREN':([11,12,13,14,15,18,22,23,25,37,49,63,],[26,27,28,29,30,32,35,36,38,52,62,71,]),'RPAREN':([16,29,32,39,40,41,42,43,44,45,47,51,53,54,55,56,57,58,59,65,67,70,73,74,75,77,],[-13,-22,-22,54,55,56,-15,58,-16,59,60,64,66,-8,-9,-10,-22,-12,-11,72,-14,74,-7,76,77,78,]),'ASSIGN':([17,],[31,]),'ELSE':([19,48,],[-4,61,]),'FI':([19,69,],[-4,73,]),'THEN':([21,64,66,72,76,78,],[34,-19,-21,-20,-17,-18,]),'QUESTION':([24,50,],[37,63,]),'NUMBER':([26,27,31,],[39,40,46,]),'COMMA':([42,],[57,]),}
+_lr_action_items = {'EXEC':([0,],[2,]),'NEW':([0,],[3,]),'$end':([1,4,27,70,99,],[0,-1,-4,-2,-3,]),'LBRACE':([2,24,50,68,91,92,],[5,5,5,5,5,5,]),'VAR':([3,],[6,]),'MACRO':([3,],[7,]),'IF':([5,28,43,],[10,10,10,]),'WALK':([5,28,43,],[11,11,11,]),'JUMP':([5,28,43,],[12,12,12,]),'DROP':([5,28,43,],[13,13,13,]),'MOVE':([5,28,43,],[14,14,14,]),'LET_GO':([5,28,43,],[15,15,15,]),'POP':([5,28,43,],[16,16,16,]),'TURN_TO_MY':([5,28,43,],[17,17,17,]),'GRAB':([5,28,43,],[19,19,19,]),'SAFE_EXE':([5,28,43,],[20,20,20,]),'MOVES':([5,28,43,],[21,21,21,]),'ID':([5,6,7,28,40,41,42,43,44,48,52,54,76,85,93,102,],[18,25,26,18,61,62,65,18,62,62,75,77,96,62,101,106,]),'REPEAT':([5,28,43,],[22,22,22,]),'NOP':([5,28,43,],[23,23,23,]),'DO':([5,28,43,],[24,24,24,]),'RBRACE':([8,28,49,],[27,-6,-5,]),'SEMICOLON':([9,23,27,69,78,79,80,81,82,83,84,86,87,88,89,90,104,],[28,-20,-4,-21,-8,-9,-10,-11,-12,-13,-14,-18,-15,-16,-17,-19,-7,]),'NOT':([10,],[30,]),'IS_BLOCKED':([10,51,],[31,73,]),'ZERO':([10,51,],[32,74,]),'IS_FACING':([10,],[33,]),'LPAREN':([11,12,13,14,15,16,17,18,19,20,21,26,30,31,33,53,73,94,],[34,35,36,37,38,39,40,41,42,43,44,48,51,52,54,76,93,102,]),'NUMBER':([22,34,35,36,37,38,39,47,],[45,55,56,57,58,59,60,70,]),'RPAREN':([23,27,41,44,48,55,56,57,58,59,60,61,62,63,64,65,66,67,69,71,75,77,78,79,80,81,82,83,84,85,86,87,88,89,90,96,98,101,104,105,106,108,],[-20,-4,-30,-30,-30,78,79,80,81,82,83,84,-23,86,-24,87,88,89,-21,91,95,97,-8,-9,-10,-11,-12,-13,-14,-30,-18,-15,-16,-17,-19,103,-22,105,-7,107,108,109,]),'ASSIGN':([25,],[47,]),'OD':([27,46,],[-4,69,]),'ELSE':([27,72,],[-4,92,]),'FI':([27,100,],[-4,104,]),'THEN':([29,95,97,103,107,109,],[50,-27,-29,-28,-25,-26,]),'QUESTION':([32,74,],[53,94,]),'TIMES':([45,],[68,]),'COMMA':([62,],[85,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'block':([2,34,60,61,],[4,48,68,69,]),'stmt_list':([5,20,],[8,33,]),'stmt':([5,20,30,],[9,9,45,]),'condition':([10,],[21,]),'param_list':([29,32,57,],[43,47,67,]),'empty':([29,32,57,],[44,44,44,]),}
+_lr_goto_items = {'program':([0,],[1,]),'block':([2,24,50,68,91,92,],[4,46,72,90,99,100,]),'stmt_list':([5,28,],[8,49,]),'stmt':([5,28,43,],[9,9,66,]),'condition':([10,],[29,]),'param_list':([41,44,48,85,],[63,67,71,98,]),'empty':([41,44,48,85,],[64,64,64,64,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,26 +27,34 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> program","S'",1,None,None,None),
-  ('program -> EXEC block','program',2,'p_program_exec','analizador_lexico.py',68),
-  ('program -> NEW VAR ID ASSIGN NUMBER','program',5,'p_program_new_var','analizador_lexico.py',72),
-  ('program -> NEW MACRO ID LPAREN param_list RPAREN block','program',7,'p_program_new_macro','analizador_lexico.py',76),
-  ('block -> LBRACE stmt_list RBRACE','block',3,'p_block','analizador_lexico.py',80),
-  ('stmt_list -> stmt SEMICOLON stmt_list','stmt_list',3,'p_stmt_list','analizador_lexico.py',84),
-  ('stmt_list -> stmt SEMICOLON','stmt_list',2,'p_stmt_list','analizador_lexico.py',85),
-  ('stmt -> IF condition THEN block ELSE block FI','stmt',7,'p_stmt','analizador_lexico.py',89),
-  ('stmt -> WALK LPAREN NUMBER RPAREN','stmt',4,'p_stmt','analizador_lexico.py',90),
-  ('stmt -> DROP LPAREN NUMBER RPAREN','stmt',4,'p_stmt','analizador_lexico.py',91),
-  ('stmt -> TURN_TO_MY LPAREN ID RPAREN','stmt',4,'p_stmt','analizador_lexico.py',92),
-  ('stmt -> SAFE_EXE LPAREN stmt RPAREN','stmt',4,'p_stmt','analizador_lexico.py',93),
-  ('stmt -> ID LPAREN param_list RPAREN','stmt',4,'p_stmt','analizador_lexico.py',94),
-  ('stmt -> NOP','stmt',1,'p_stmt','analizador_lexico.py',95),
-  ('param_list -> ID COMMA param_list','param_list',3,'p_param_list','analizador_lexico.py',99),
-  ('param_list -> ID','param_list',1,'p_param_list','analizador_lexico.py',100),
-  ('param_list -> empty','param_list',1,'p_param_list','analizador_lexico.py',101),
-  ('condition -> NOT LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN','condition',7,'p_condition','analizador_lexico.py',105),
-  ('condition -> NOT LPAREN ZERO QUESTION LPAREN ID RPAREN RPAREN','condition',8,'p_condition','analizador_lexico.py',106),
-  ('condition -> IS_BLOCKED LPAREN ID RPAREN','condition',4,'p_condition','analizador_lexico.py',107),
-  ('condition -> ZERO QUESTION LPAREN ID RPAREN','condition',5,'p_condition','analizador_lexico.py',108),
-  ('condition -> IS_FACING LPAREN ID RPAREN','condition',4,'p_condition','analizador_lexico.py',109),
-  ('empty -> <empty>','empty',0,'p_empty','analizador_lexico.py',113),
+  ('program -> EXEC block','program',2,'p_program_exec','analizador_lexico.py',81),
+  ('program -> NEW VAR ID ASSIGN NUMBER','program',5,'p_program_new_var','analizador_lexico.py',85),
+  ('program -> NEW MACRO ID LPAREN param_list RPAREN block','program',7,'p_program_new_macro','analizador_lexico.py',89),
+  ('block -> LBRACE stmt_list RBRACE','block',3,'p_block','analizador_lexico.py',93),
+  ('stmt_list -> stmt SEMICOLON stmt_list','stmt_list',3,'p_stmt_list','analizador_lexico.py',97),
+  ('stmt_list -> stmt SEMICOLON','stmt_list',2,'p_stmt_list','analizador_lexico.py',98),
+  ('stmt -> IF condition THEN block ELSE block FI','stmt',7,'p_stmt','analizador_lexico.py',102),
+  ('stmt -> WALK LPAREN NUMBER RPAREN','stmt',4,'p_stmt','analizador_lexico.py',103),
+  ('stmt -> JUMP LPAREN NUMBER RPAREN','stmt',4,'p_stmt','analizador_lexico.py',104),
+  ('stmt -> DROP LPAREN NUMBER RPAREN','stmt',4,'p_stmt','analizador_lexico.py',105),
+  ('stmt -> MOVE LPAREN NUMBER RPAREN','stmt',4,'p_stmt','analizador_lexico.py',106),
+  ('stmt -> LET_GO LPAREN NUMBER RPAREN','stmt',4,'p_stmt','analizador_lexico.py',107),
+  ('stmt -> POP LPAREN NUMBER RPAREN','stmt',4,'p_stmt','analizador_lexico.py',108),
+  ('stmt -> TURN_TO_MY LPAREN ID RPAREN','stmt',4,'p_stmt','analizador_lexico.py',109),
+  ('stmt -> GRAB LPAREN ID RPAREN','stmt',4,'p_stmt','analizador_lexico.py',110),
+  ('stmt -> SAFE_EXE LPAREN stmt RPAREN','stmt',4,'p_stmt','analizador_lexico.py',111),
+  ('stmt -> MOVES LPAREN param_list RPAREN','stmt',4,'p_stmt','analizador_lexico.py',112),
+  ('stmt -> ID LPAREN param_list RPAREN','stmt',4,'p_stmt','analizador_lexico.py',113),
+  ('stmt -> REPEAT NUMBER TIMES block','stmt',4,'p_stmt','analizador_lexico.py',114),
+  ('stmt -> NOP','stmt',1,'p_stmt','analizador_lexico.py',115),
+  ('stmt -> DO block OD','stmt',3,'p_stmt_do_while','analizador_lexico.py',119),
+  ('param_list -> ID COMMA param_list','param_list',3,'p_param_list','analizador_lexico.py',123),
+  ('param_list -> ID','param_list',1,'p_param_list','analizador_lexico.py',124),
+  ('param_list -> empty','param_list',1,'p_param_list','analizador_lexico.py',125),
+  ('condition -> NOT LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN','condition',7,'p_condition','analizador_lexico.py',129),
+  ('condition -> NOT LPAREN ZERO QUESTION LPAREN ID RPAREN RPAREN','condition',8,'p_condition','analizador_lexico.py',130),
+  ('condition -> IS_BLOCKED LPAREN ID RPAREN','condition',4,'p_condition','analizador_lexico.py',131),
+  ('condition -> ZERO QUESTION LPAREN ID RPAREN','condition',5,'p_condition','analizador_lexico.py',132),
+  ('condition -> IS_FACING LPAREN ID RPAREN','condition',4,'p_condition','analizador_lexico.py',133),
+  ('empty -> <empty>','empty',0,'p_empty','analizador_lexico.py',137),
 ]
