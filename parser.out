@@ -9,7 +9,6 @@ Unused terminals:
     GOTO
     GRAB
     GRAB_BALLOON
-    IS_FACING
     JUMP
     LET_GO
     MOVE
@@ -23,14 +22,10 @@ Unused terminals:
     PLUS
     POP
     POP_BALLOON
-    QUESTION
     REP
-    SAFE_EXE
     TIMES
     TURN_RIGHT
-    TURN_TO_MY
     TURN_TO_THE
-    ZERO
 
 Grammar
 
@@ -44,20 +39,25 @@ Rule 6     stmt_list -> stmt SEMICOLON
 Rule 7     stmt -> IF condition THEN block ELSE block FI
 Rule 8     stmt -> WALK LPAREN NUMBER RPAREN
 Rule 9     stmt -> DROP LPAREN NUMBER RPAREN
-Rule 10    stmt -> ID LPAREN param_list RPAREN
-Rule 11    stmt -> NOP
-Rule 12    param_list -> ID COMMA param_list
-Rule 13    param_list -> ID
-Rule 14    param_list -> empty
-Rule 15    condition -> NOT LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN
-Rule 16    condition -> IS_BLOCKED LPAREN ID RPAREN
-Rule 17    empty -> <empty>
+Rule 10    stmt -> TURN_TO_MY LPAREN ID RPAREN
+Rule 11    stmt -> SAFE_EXE LPAREN stmt RPAREN
+Rule 12    stmt -> ID LPAREN param_list RPAREN
+Rule 13    stmt -> NOP
+Rule 14    param_list -> ID COMMA param_list
+Rule 15    param_list -> ID
+Rule 16    param_list -> empty
+Rule 17    condition -> NOT LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN
+Rule 18    condition -> NOT LPAREN ZERO QUESTION LPAREN ID RPAREN RPAREN
+Rule 19    condition -> IS_BLOCKED LPAREN ID RPAREN
+Rule 20    condition -> ZERO QUESTION LPAREN ID RPAREN
+Rule 21    condition -> IS_FACING LPAREN ID RPAREN
+Rule 22    empty -> <empty>
 
 Terminals, with rules where they appear
 
 ASSIGN               : 2
 COLON                : 
-COMMA                : 12
+COMMA                : 14
 DO                   : 
 DROP                 : 9
 DROP_CHIP            : 
@@ -68,22 +68,22 @@ FI                   : 7
 GOTO                 : 
 GRAB                 : 
 GRAB_BALLOON         : 
-ID                   : 2 3 10 12 13 15 16
+ID                   : 2 3 10 12 14 15 17 18 19 20 21
 IF                   : 7
-IS_BLOCKED           : 15 16
-IS_FACING            : 
+IS_BLOCKED           : 17 19
+IS_FACING            : 21
 JUMP                 : 
 LBRACE               : 4
 LET_GO               : 
-LPAREN               : 3 8 9 10 15 15 16
+LPAREN               : 3 8 9 10 11 12 17 17 18 18 19 20 21
 MACRO                : 3
 MOVE                 : 
 MOVES                : 
 NEW                  : 2 3
 NEW_MACRO            : 
 NEW_VAR              : 
-NOP                  : 11
-NOT                  : 15
+NOP                  : 13
+NOT                  : 17 18
 NUMBER               : 2 8 9
 OD                   : 
 PICK                 : 
@@ -92,30 +92,30 @@ PLACE_BALLOON        :
 PLUS                 : 
 POP                  : 
 POP_BALLOON          : 
-QUESTION             : 
+QUESTION             : 18 20
 RBRACE               : 4
 REP                  : 
-RPAREN               : 3 8 9 10 15 15 16
-SAFE_EXE             : 
+RPAREN               : 3 8 9 10 11 12 17 17 18 18 19 20 21
+SAFE_EXE             : 11
 SEMICOLON            : 5 6
 THEN                 : 7
 TIMES                : 
 TURN_RIGHT           : 
-TURN_TO_MY           : 
+TURN_TO_MY           : 10
 TURN_TO_THE          : 
 VAR                  : 2
 WALK                 : 8
-ZERO                 : 
+ZERO                 : 18 20
 error                : 
 
 Nonterminals, with rules where they appear
 
 block                : 1 3 7 7
 condition            : 7
-empty                : 14
-param_list           : 3 10 12
+empty                : 16
+param_list           : 3 12 14
 program              : 0
-stmt                 : 5 6
+stmt                 : 5 6 11
 stmt_list            : 4 5
 
 Parsing method: LALR
@@ -171,14 +171,18 @@ state 5
     (7) stmt -> . IF condition THEN block ELSE block FI
     (8) stmt -> . WALK LPAREN NUMBER RPAREN
     (9) stmt -> . DROP LPAREN NUMBER RPAREN
-    (10) stmt -> . ID LPAREN param_list RPAREN
-    (11) stmt -> . NOP
+    (10) stmt -> . TURN_TO_MY LPAREN ID RPAREN
+    (11) stmt -> . SAFE_EXE LPAREN stmt RPAREN
+    (12) stmt -> . ID LPAREN param_list RPAREN
+    (13) stmt -> . NOP
 
     IF              shift and go to state 10
     WALK            shift and go to state 11
     DROP            shift and go to state 12
-    ID              shift and go to state 13
-    NOP             shift and go to state 14
+    TURN_TO_MY      shift and go to state 13
+    SAFE_EXE        shift and go to state 15
+    ID              shift and go to state 14
+    NOP             shift and go to state 16
 
     stmt_list                      shift and go to state 8
     stmt                           shift and go to state 9
@@ -187,21 +191,21 @@ state 6
 
     (2) program -> NEW VAR . ID ASSIGN NUMBER
 
-    ID              shift and go to state 15
+    ID              shift and go to state 17
 
 
 state 7
 
     (3) program -> NEW MACRO . ID LPAREN param_list RPAREN block
 
-    ID              shift and go to state 16
+    ID              shift and go to state 18
 
 
 state 8
 
     (4) block -> LBRACE stmt_list . RBRACE
 
-    RBRACE          shift and go to state 17
+    RBRACE          shift and go to state 19
 
 
 state 9
@@ -209,63 +213,83 @@ state 9
     (5) stmt_list -> stmt . SEMICOLON stmt_list
     (6) stmt_list -> stmt . SEMICOLON
 
-    SEMICOLON       shift and go to state 18
+    SEMICOLON       shift and go to state 20
 
 
 state 10
 
     (7) stmt -> IF . condition THEN block ELSE block FI
-    (15) condition -> . NOT LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN
-    (16) condition -> . IS_BLOCKED LPAREN ID RPAREN
+    (17) condition -> . NOT LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN
+    (18) condition -> . NOT LPAREN ZERO QUESTION LPAREN ID RPAREN RPAREN
+    (19) condition -> . IS_BLOCKED LPAREN ID RPAREN
+    (20) condition -> . ZERO QUESTION LPAREN ID RPAREN
+    (21) condition -> . IS_FACING LPAREN ID RPAREN
 
-    NOT             shift and go to state 20
-    IS_BLOCKED      shift and go to state 21
+    NOT             shift and go to state 22
+    IS_BLOCKED      shift and go to state 23
+    ZERO            shift and go to state 24
+    IS_FACING       shift and go to state 25
 
-    condition                      shift and go to state 19
+    condition                      shift and go to state 21
 
 state 11
 
     (8) stmt -> WALK . LPAREN NUMBER RPAREN
 
-    LPAREN          shift and go to state 22
+    LPAREN          shift and go to state 26
 
 
 state 12
 
     (9) stmt -> DROP . LPAREN NUMBER RPAREN
 
-    LPAREN          shift and go to state 23
+    LPAREN          shift and go to state 27
 
 
 state 13
 
-    (10) stmt -> ID . LPAREN param_list RPAREN
+    (10) stmt -> TURN_TO_MY . LPAREN ID RPAREN
 
-    LPAREN          shift and go to state 24
+    LPAREN          shift and go to state 28
 
 
 state 14
 
-    (11) stmt -> NOP .
+    (12) stmt -> ID . LPAREN param_list RPAREN
 
-    SEMICOLON       reduce using rule 11 (stmt -> NOP .)
+    LPAREN          shift and go to state 29
 
 
 state 15
 
-    (2) program -> NEW VAR ID . ASSIGN NUMBER
+    (11) stmt -> SAFE_EXE . LPAREN stmt RPAREN
 
-    ASSIGN          shift and go to state 25
+    LPAREN          shift and go to state 30
 
 
 state 16
 
-    (3) program -> NEW MACRO ID . LPAREN param_list RPAREN block
+    (13) stmt -> NOP .
 
-    LPAREN          shift and go to state 26
+    SEMICOLON       reduce using rule 13 (stmt -> NOP .)
+    RPAREN          reduce using rule 13 (stmt -> NOP .)
 
 
 state 17
+
+    (2) program -> NEW VAR ID . ASSIGN NUMBER
+
+    ASSIGN          shift and go to state 31
+
+
+state 18
+
+    (3) program -> NEW MACRO ID . LPAREN param_list RPAREN block
+
+    LPAREN          shift and go to state 32
+
+
+state 19
 
     (4) block -> LBRACE stmt_list RBRACE .
 
@@ -274,7 +298,7 @@ state 17
     FI              reduce using rule 4 (block -> LBRACE stmt_list RBRACE .)
 
 
-state 18
+state 20
 
     (5) stmt_list -> stmt SEMICOLON . stmt_list
     (6) stmt_list -> stmt SEMICOLON .
@@ -283,303 +307,477 @@ state 18
     (7) stmt -> . IF condition THEN block ELSE block FI
     (8) stmt -> . WALK LPAREN NUMBER RPAREN
     (9) stmt -> . DROP LPAREN NUMBER RPAREN
-    (10) stmt -> . ID LPAREN param_list RPAREN
-    (11) stmt -> . NOP
+    (10) stmt -> . TURN_TO_MY LPAREN ID RPAREN
+    (11) stmt -> . SAFE_EXE LPAREN stmt RPAREN
+    (12) stmt -> . ID LPAREN param_list RPAREN
+    (13) stmt -> . NOP
 
     RBRACE          reduce using rule 6 (stmt_list -> stmt SEMICOLON .)
     IF              shift and go to state 10
     WALK            shift and go to state 11
     DROP            shift and go to state 12
-    ID              shift and go to state 13
-    NOP             shift and go to state 14
+    TURN_TO_MY      shift and go to state 13
+    SAFE_EXE        shift and go to state 15
+    ID              shift and go to state 14
+    NOP             shift and go to state 16
 
     stmt                           shift and go to state 9
-    stmt_list                      shift and go to state 27
-
-state 19
-
-    (7) stmt -> IF condition . THEN block ELSE block FI
-
-    THEN            shift and go to state 28
-
-
-state 20
-
-    (15) condition -> NOT . LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN
-
-    LPAREN          shift and go to state 29
-
+    stmt_list                      shift and go to state 33
 
 state 21
 
-    (16) condition -> IS_BLOCKED . LPAREN ID RPAREN
+    (7) stmt -> IF condition . THEN block ELSE block FI
 
-    LPAREN          shift and go to state 30
+    THEN            shift and go to state 34
 
 
 state 22
 
-    (8) stmt -> WALK LPAREN . NUMBER RPAREN
+    (17) condition -> NOT . LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN
+    (18) condition -> NOT . LPAREN ZERO QUESTION LPAREN ID RPAREN RPAREN
 
-    NUMBER          shift and go to state 31
+    LPAREN          shift and go to state 35
 
 
 state 23
 
-    (9) stmt -> DROP LPAREN . NUMBER RPAREN
+    (19) condition -> IS_BLOCKED . LPAREN ID RPAREN
 
-    NUMBER          shift and go to state 32
+    LPAREN          shift and go to state 36
 
 
 state 24
 
-    (10) stmt -> ID LPAREN . param_list RPAREN
-    (12) param_list -> . ID COMMA param_list
-    (13) param_list -> . ID
-    (14) param_list -> . empty
-    (17) empty -> .
+    (20) condition -> ZERO . QUESTION LPAREN ID RPAREN
 
-    ID              shift and go to state 33
-    RPAREN          reduce using rule 17 (empty -> .)
+    QUESTION        shift and go to state 37
 
-    param_list                     shift and go to state 34
-    empty                          shift and go to state 35
 
 state 25
 
-    (2) program -> NEW VAR ID ASSIGN . NUMBER
+    (21) condition -> IS_FACING . LPAREN ID RPAREN
 
-    NUMBER          shift and go to state 36
+    LPAREN          shift and go to state 38
 
 
 state 26
 
-    (3) program -> NEW MACRO ID LPAREN . param_list RPAREN block
-    (12) param_list -> . ID COMMA param_list
-    (13) param_list -> . ID
-    (14) param_list -> . empty
-    (17) empty -> .
+    (8) stmt -> WALK LPAREN . NUMBER RPAREN
 
-    ID              shift and go to state 33
-    RPAREN          reduce using rule 17 (empty -> .)
+    NUMBER          shift and go to state 39
 
-    param_list                     shift and go to state 37
-    empty                          shift and go to state 35
 
 state 27
+
+    (9) stmt -> DROP LPAREN . NUMBER RPAREN
+
+    NUMBER          shift and go to state 40
+
+
+state 28
+
+    (10) stmt -> TURN_TO_MY LPAREN . ID RPAREN
+
+    ID              shift and go to state 41
+
+
+state 29
+
+    (12) stmt -> ID LPAREN . param_list RPAREN
+    (14) param_list -> . ID COMMA param_list
+    (15) param_list -> . ID
+    (16) param_list -> . empty
+    (22) empty -> .
+
+    ID              shift and go to state 42
+    RPAREN          reduce using rule 22 (empty -> .)
+
+    param_list                     shift and go to state 43
+    empty                          shift and go to state 44
+
+state 30
+
+    (11) stmt -> SAFE_EXE LPAREN . stmt RPAREN
+    (7) stmt -> . IF condition THEN block ELSE block FI
+    (8) stmt -> . WALK LPAREN NUMBER RPAREN
+    (9) stmt -> . DROP LPAREN NUMBER RPAREN
+    (10) stmt -> . TURN_TO_MY LPAREN ID RPAREN
+    (11) stmt -> . SAFE_EXE LPAREN stmt RPAREN
+    (12) stmt -> . ID LPAREN param_list RPAREN
+    (13) stmt -> . NOP
+
+    IF              shift and go to state 10
+    WALK            shift and go to state 11
+    DROP            shift and go to state 12
+    TURN_TO_MY      shift and go to state 13
+    SAFE_EXE        shift and go to state 15
+    ID              shift and go to state 14
+    NOP             shift and go to state 16
+
+    stmt                           shift and go to state 45
+
+state 31
+
+    (2) program -> NEW VAR ID ASSIGN . NUMBER
+
+    NUMBER          shift and go to state 46
+
+
+state 32
+
+    (3) program -> NEW MACRO ID LPAREN . param_list RPAREN block
+    (14) param_list -> . ID COMMA param_list
+    (15) param_list -> . ID
+    (16) param_list -> . empty
+    (22) empty -> .
+
+    ID              shift and go to state 42
+    RPAREN          reduce using rule 22 (empty -> .)
+
+    param_list                     shift and go to state 47
+    empty                          shift and go to state 44
+
+state 33
 
     (5) stmt_list -> stmt SEMICOLON stmt_list .
 
     RBRACE          reduce using rule 5 (stmt_list -> stmt SEMICOLON stmt_list .)
 
 
-state 28
+state 34
 
     (7) stmt -> IF condition THEN . block ELSE block FI
     (4) block -> . LBRACE stmt_list RBRACE
 
     LBRACE          shift and go to state 5
 
-    block                          shift and go to state 38
-
-state 29
-
-    (15) condition -> NOT LPAREN . IS_BLOCKED LPAREN ID RPAREN RPAREN
-
-    IS_BLOCKED      shift and go to state 39
-
-
-state 30
-
-    (16) condition -> IS_BLOCKED LPAREN . ID RPAREN
-
-    ID              shift and go to state 40
-
-
-state 31
-
-    (8) stmt -> WALK LPAREN NUMBER . RPAREN
-
-    RPAREN          shift and go to state 41
-
-
-state 32
-
-    (9) stmt -> DROP LPAREN NUMBER . RPAREN
-
-    RPAREN          shift and go to state 42
-
-
-state 33
-
-    (12) param_list -> ID . COMMA param_list
-    (13) param_list -> ID .
-
-    COMMA           shift and go to state 43
-    RPAREN          reduce using rule 13 (param_list -> ID .)
-
-
-state 34
-
-    (10) stmt -> ID LPAREN param_list . RPAREN
-
-    RPAREN          shift and go to state 44
-
+    block                          shift and go to state 48
 
 state 35
 
-    (14) param_list -> empty .
+    (17) condition -> NOT LPAREN . IS_BLOCKED LPAREN ID RPAREN RPAREN
+    (18) condition -> NOT LPAREN . ZERO QUESTION LPAREN ID RPAREN RPAREN
 
-    RPAREN          reduce using rule 14 (param_list -> empty .)
+    IS_BLOCKED      shift and go to state 49
+    ZERO            shift and go to state 50
 
 
 state 36
+
+    (19) condition -> IS_BLOCKED LPAREN . ID RPAREN
+
+    ID              shift and go to state 51
+
+
+state 37
+
+    (20) condition -> ZERO QUESTION . LPAREN ID RPAREN
+
+    LPAREN          shift and go to state 52
+
+
+state 38
+
+    (21) condition -> IS_FACING LPAREN . ID RPAREN
+
+    ID              shift and go to state 53
+
+
+state 39
+
+    (8) stmt -> WALK LPAREN NUMBER . RPAREN
+
+    RPAREN          shift and go to state 54
+
+
+state 40
+
+    (9) stmt -> DROP LPAREN NUMBER . RPAREN
+
+    RPAREN          shift and go to state 55
+
+
+state 41
+
+    (10) stmt -> TURN_TO_MY LPAREN ID . RPAREN
+
+    RPAREN          shift and go to state 56
+
+
+state 42
+
+    (14) param_list -> ID . COMMA param_list
+    (15) param_list -> ID .
+
+    COMMA           shift and go to state 57
+    RPAREN          reduce using rule 15 (param_list -> ID .)
+
+
+state 43
+
+    (12) stmt -> ID LPAREN param_list . RPAREN
+
+    RPAREN          shift and go to state 58
+
+
+state 44
+
+    (16) param_list -> empty .
+
+    RPAREN          reduce using rule 16 (param_list -> empty .)
+
+
+state 45
+
+    (11) stmt -> SAFE_EXE LPAREN stmt . RPAREN
+
+    RPAREN          shift and go to state 59
+
+
+state 46
 
     (2) program -> NEW VAR ID ASSIGN NUMBER .
 
     $end            reduce using rule 2 (program -> NEW VAR ID ASSIGN NUMBER .)
 
 
-state 37
+state 47
 
     (3) program -> NEW MACRO ID LPAREN param_list . RPAREN block
 
-    RPAREN          shift and go to state 45
+    RPAREN          shift and go to state 60
 
 
-state 38
+state 48
 
     (7) stmt -> IF condition THEN block . ELSE block FI
 
-    ELSE            shift and go to state 46
+    ELSE            shift and go to state 61
 
 
-state 39
+state 49
 
-    (15) condition -> NOT LPAREN IS_BLOCKED . LPAREN ID RPAREN RPAREN
+    (17) condition -> NOT LPAREN IS_BLOCKED . LPAREN ID RPAREN RPAREN
 
-    LPAREN          shift and go to state 47
-
-
-state 40
-
-    (16) condition -> IS_BLOCKED LPAREN ID . RPAREN
-
-    RPAREN          shift and go to state 48
+    LPAREN          shift and go to state 62
 
 
-state 41
+state 50
+
+    (18) condition -> NOT LPAREN ZERO . QUESTION LPAREN ID RPAREN RPAREN
+
+    QUESTION        shift and go to state 63
+
+
+state 51
+
+    (19) condition -> IS_BLOCKED LPAREN ID . RPAREN
+
+    RPAREN          shift and go to state 64
+
+
+state 52
+
+    (20) condition -> ZERO QUESTION LPAREN . ID RPAREN
+
+    ID              shift and go to state 65
+
+
+state 53
+
+    (21) condition -> IS_FACING LPAREN ID . RPAREN
+
+    RPAREN          shift and go to state 66
+
+
+state 54
 
     (8) stmt -> WALK LPAREN NUMBER RPAREN .
 
     SEMICOLON       reduce using rule 8 (stmt -> WALK LPAREN NUMBER RPAREN .)
+    RPAREN          reduce using rule 8 (stmt -> WALK LPAREN NUMBER RPAREN .)
 
 
-state 42
+state 55
 
     (9) stmt -> DROP LPAREN NUMBER RPAREN .
 
     SEMICOLON       reduce using rule 9 (stmt -> DROP LPAREN NUMBER RPAREN .)
+    RPAREN          reduce using rule 9 (stmt -> DROP LPAREN NUMBER RPAREN .)
 
 
-state 43
+state 56
 
-    (12) param_list -> ID COMMA . param_list
-    (12) param_list -> . ID COMMA param_list
-    (13) param_list -> . ID
-    (14) param_list -> . empty
-    (17) empty -> .
+    (10) stmt -> TURN_TO_MY LPAREN ID RPAREN .
 
-    ID              shift and go to state 33
-    RPAREN          reduce using rule 17 (empty -> .)
-
-    param_list                     shift and go to state 49
-    empty                          shift and go to state 35
-
-state 44
-
-    (10) stmt -> ID LPAREN param_list RPAREN .
-
-    SEMICOLON       reduce using rule 10 (stmt -> ID LPAREN param_list RPAREN .)
+    SEMICOLON       reduce using rule 10 (stmt -> TURN_TO_MY LPAREN ID RPAREN .)
+    RPAREN          reduce using rule 10 (stmt -> TURN_TO_MY LPAREN ID RPAREN .)
 
 
-state 45
+state 57
+
+    (14) param_list -> ID COMMA . param_list
+    (14) param_list -> . ID COMMA param_list
+    (15) param_list -> . ID
+    (16) param_list -> . empty
+    (22) empty -> .
+
+    ID              shift and go to state 42
+    RPAREN          reduce using rule 22 (empty -> .)
+
+    param_list                     shift and go to state 67
+    empty                          shift and go to state 44
+
+state 58
+
+    (12) stmt -> ID LPAREN param_list RPAREN .
+
+    SEMICOLON       reduce using rule 12 (stmt -> ID LPAREN param_list RPAREN .)
+    RPAREN          reduce using rule 12 (stmt -> ID LPAREN param_list RPAREN .)
+
+
+state 59
+
+    (11) stmt -> SAFE_EXE LPAREN stmt RPAREN .
+
+    SEMICOLON       reduce using rule 11 (stmt -> SAFE_EXE LPAREN stmt RPAREN .)
+    RPAREN          reduce using rule 11 (stmt -> SAFE_EXE LPAREN stmt RPAREN .)
+
+
+state 60
 
     (3) program -> NEW MACRO ID LPAREN param_list RPAREN . block
     (4) block -> . LBRACE stmt_list RBRACE
 
     LBRACE          shift and go to state 5
 
-    block                          shift and go to state 50
+    block                          shift and go to state 68
 
-state 46
+state 61
 
     (7) stmt -> IF condition THEN block ELSE . block FI
     (4) block -> . LBRACE stmt_list RBRACE
 
     LBRACE          shift and go to state 5
 
-    block                          shift and go to state 51
+    block                          shift and go to state 69
 
-state 47
+state 62
 
-    (15) condition -> NOT LPAREN IS_BLOCKED LPAREN . ID RPAREN RPAREN
+    (17) condition -> NOT LPAREN IS_BLOCKED LPAREN . ID RPAREN RPAREN
 
-    ID              shift and go to state 52
-
-
-state 48
-
-    (16) condition -> IS_BLOCKED LPAREN ID RPAREN .
-
-    THEN            reduce using rule 16 (condition -> IS_BLOCKED LPAREN ID RPAREN .)
+    ID              shift and go to state 70
 
 
-state 49
+state 63
 
-    (12) param_list -> ID COMMA param_list .
+    (18) condition -> NOT LPAREN ZERO QUESTION . LPAREN ID RPAREN RPAREN
 
-    RPAREN          reduce using rule 12 (param_list -> ID COMMA param_list .)
+    LPAREN          shift and go to state 71
 
 
-state 50
+state 64
+
+    (19) condition -> IS_BLOCKED LPAREN ID RPAREN .
+
+    THEN            reduce using rule 19 (condition -> IS_BLOCKED LPAREN ID RPAREN .)
+
+
+state 65
+
+    (20) condition -> ZERO QUESTION LPAREN ID . RPAREN
+
+    RPAREN          shift and go to state 72
+
+
+state 66
+
+    (21) condition -> IS_FACING LPAREN ID RPAREN .
+
+    THEN            reduce using rule 21 (condition -> IS_FACING LPAREN ID RPAREN .)
+
+
+state 67
+
+    (14) param_list -> ID COMMA param_list .
+
+    RPAREN          reduce using rule 14 (param_list -> ID COMMA param_list .)
+
+
+state 68
 
     (3) program -> NEW MACRO ID LPAREN param_list RPAREN block .
 
     $end            reduce using rule 3 (program -> NEW MACRO ID LPAREN param_list RPAREN block .)
 
 
-state 51
+state 69
 
     (7) stmt -> IF condition THEN block ELSE block . FI
 
-    FI              shift and go to state 53
+    FI              shift and go to state 73
 
 
-state 52
+state 70
 
-    (15) condition -> NOT LPAREN IS_BLOCKED LPAREN ID . RPAREN RPAREN
+    (17) condition -> NOT LPAREN IS_BLOCKED LPAREN ID . RPAREN RPAREN
 
-    RPAREN          shift and go to state 54
+    RPAREN          shift and go to state 74
 
 
-state 53
+state 71
+
+    (18) condition -> NOT LPAREN ZERO QUESTION LPAREN . ID RPAREN RPAREN
+
+    ID              shift and go to state 75
+
+
+state 72
+
+    (20) condition -> ZERO QUESTION LPAREN ID RPAREN .
+
+    THEN            reduce using rule 20 (condition -> ZERO QUESTION LPAREN ID RPAREN .)
+
+
+state 73
 
     (7) stmt -> IF condition THEN block ELSE block FI .
 
     SEMICOLON       reduce using rule 7 (stmt -> IF condition THEN block ELSE block FI .)
+    RPAREN          reduce using rule 7 (stmt -> IF condition THEN block ELSE block FI .)
 
 
-state 54
+state 74
 
-    (15) condition -> NOT LPAREN IS_BLOCKED LPAREN ID RPAREN . RPAREN
+    (17) condition -> NOT LPAREN IS_BLOCKED LPAREN ID RPAREN . RPAREN
 
-    RPAREN          shift and go to state 55
+    RPAREN          shift and go to state 76
 
 
-state 55
+state 75
 
-    (15) condition -> NOT LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN .
+    (18) condition -> NOT LPAREN ZERO QUESTION LPAREN ID . RPAREN RPAREN
 
-    THEN            reduce using rule 15 (condition -> NOT LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN .)
+    RPAREN          shift and go to state 77
+
+
+state 76
+
+    (17) condition -> NOT LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN .
+
+    THEN            reduce using rule 17 (condition -> NOT LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN .)
+
+
+state 77
+
+    (18) condition -> NOT LPAREN ZERO QUESTION LPAREN ID RPAREN . RPAREN
+
+    RPAREN          shift and go to state 78
+
+
+state 78
+
+    (18) condition -> NOT LPAREN ZERO QUESTION LPAREN ID RPAREN RPAREN .
+
+    THEN            reduce using rule 18 (condition -> NOT LPAREN ZERO QUESTION LPAREN ID RPAREN RPAREN .)
 

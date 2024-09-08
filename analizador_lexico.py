@@ -4,7 +4,7 @@ import os
 
 #LISTA DE TOKENS.
 tokens = ['MOVE','TURN_RIGHT' ,'DROP_CHIP' ,'PLACE_BALLOON' ,'PICKUP_CHIP' ,'GRAB_BALLOON' ,'POP_BALLOON' , 'GOTO' ,'NEW_VAR' ,'NUMBER', 'ID','EQUALS' ,'NEW_MACRO', 
-          'ASSIGN', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'SEMICOLON', 'COMMA', 'PLUS', 'COLON', 'QUESTION']
+          'ASSIGN', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'SEMICOLON', 'COMMA', 'PLUS', 'QUESTION']
  
 #PALABRAS RESERVADAS.
 reserved = {'exec': 'EXEC', 'new': 'NEW', 'var': 'VAR', 'macro': 'MACRO', 'if': 'IF', 'then': 'THEN', 'else': 'ELSE', 'fi': 'FI', 'do': 'DO', 'od': 'OD', 'rep': 'REP', 'times': 'TIMES',
@@ -23,12 +23,11 @@ t_RBRACE = r'\}'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_ASSIGN = r'='
-t_COLON = r':'
 t_QUESTION = r'\?'
 
 #CONDICIONES ESPECIFICAS.
-t_IS_BLOCKED = r'isBlocked\?'
-t_IS_FACING =  r'isFacing\?'
+t_IS_BLOCKED = r'blocked\?'
+t_IS_FACING =  r'facing\?'
 t_ZERO = r'zero\?'
 t_NOT = r'not'
 
@@ -89,6 +88,8 @@ def p_stmt(p):
     '''stmt : IF condition THEN block ELSE block FI
             | WALK LPAREN NUMBER RPAREN
             | DROP LPAREN NUMBER RPAREN
+            | TURN_TO_MY LPAREN ID RPAREN
+            | SAFE_EXE LPAREN stmt RPAREN
             | ID LPAREN param_list RPAREN
             | NOP'''
     pass
@@ -101,7 +102,10 @@ def p_param_list(p):
 
 def p_condition(p):
     '''condition : NOT LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN
-                 | IS_BLOCKED LPAREN ID RPAREN'''
+                 | NOT LPAREN ZERO QUESTION LPAREN ID RPAREN RPAREN
+                 | IS_BLOCKED LPAREN ID RPAREN
+                 | ZERO QUESTION LPAREN ID RPAREN
+                 | IS_FACING LPAREN ID RPAREN'''
     pass
 
 def p_empty(p):
@@ -135,6 +139,13 @@ def analyze_file(filename):
         if not tok:
             break
         print (tok)
+        
+    result = parser.parse(data)
+    
+    if result is None:
+        return True
+    else:
+        return False
 
 if __name__ == '__main__':
     archivo = 'code-examples.txt'
