@@ -10,7 +10,8 @@ tokens = ['MOVE','TURN_RIGHT' ,'DROP_CHIP' ,'PLACE_BALLOON' ,'PICKUP_CHIP' ,'GRA
 reserved = {'exec': 'EXEC', 'if': 'IF', 'then': 'THEN', 'else': 'ELSE', 'fi': 'FI', 'do': 'DO', 'od': 'OD', 'rep': 'REP', 'times': 'TIMES',
             'turntomy': 'TURN_TO_MY', 'turntothe': 'TURN_TO_THE', 'walk': 'WALK', 'jump': 'JUMP', 'drop': 'DROP', 'pick': 'PICK', 'grab': 'GRAB', 'letgo': 'LET_GO', 'pop': 'POP', 'moves': 'MOVES',
             'nop': 'NOP', 'safeexe': 'SAFE_EXE', 'isblocked': 'IS_BLOCKED', 'isfacing': 'IS_FACING', 'zero': 'ZERO', 'not': 'NOT', 'size': 'SIZE', 'myx': 'MYX', 'myy': 'MYY', 'mychips': 'MYCHIPS',
-            'myballoons': 'MYBALLOONS', 'balloonshere': 'BALLOONSHERE', 'chipshere': 'CHIPSHERE', 'roomforchips': 'ROOMFORCHIPS'}
+            'myballoons': 'MYBALLOONS', 'balloonshere': 'BALLOONSHERE', 'chipshere': 'CHIPSHERE', 'roomforchips': 'ROOMFORCHIPS', 'blocked': 'BLOCKED', 'left': 'LEFT', 'right': 'RIGHT', 'forward': 'FORWARD',
+            'back': 'BACK', 'new':'NEW', 'var': 'VAR', 'macro': 'MACRO', 'while': 'WHILE', 'north': 'NORTH', 'south': 'SOUTH', 'east': 'EAST', 'west': 'WEST'}
 
 tokens = tokens + list(reserved.values())
 
@@ -46,12 +47,6 @@ t_REP = r'rep'
 t_TURN_RIGHT = r'turn_right'
 t_TURN_TO_THE = r'turn_to_the'
 
-#Reconocimiento de numeros.
-def t_NUMBER(t):
-    r'\d+'
-    t.value = int(t.value)
-    return t
-
 #Identificadores y palabras reservadas.
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
@@ -62,6 +57,12 @@ def t_ID(t):
         print('Error: Id descnocido {0} en la linea {1}'.format(t.value, t.lexer.lineno))
         t.type = 'ID'
             
+    return t
+
+#Reconocimiento de numeros.
+def t_NUMBER(t):
+    r'\d+'
+    t.value = int(t.value)
     return t
 
 #Ignorar comentarios.
@@ -88,15 +89,34 @@ def p_program_exec(p):
     pass
 
 def p_program_new_var(p):
-    '''program : NEW_VAR ID ASSIGN NUMBER'''
+    '''program : NEW VAR ID ASSIGN NUMBER SEMICOLON'''
     pass
 
 def p_program_new_macro(p):
-    '''program : NEW_MACRO ID LPAREN param_list RPAREN block'''
+    '''program : NEW MACRO ID LPAREN param_list RPAREN block SEMICOLON'''
     pass
 
 def p_block(p):
     '''block : LBRACE stmt_list RBRACE'''
+    pass
+
+def p_blocked(p):
+    '''condition : BLOCKED '''
+    pass
+
+def p_direction1(p):
+    '''direction1 : LEFT
+                  | RIGHT
+                  | FORWARD
+                  | BACK'''
+    pass
+
+def p_direction2(p):
+    '''direction2 : NORTH
+                  | SOUTH
+                  | EAST
+                  | WEST'''
+                  
     pass
 
 def p_stmt_list(p):
@@ -112,7 +132,7 @@ def p_stmt(p):
             | MOVE LPAREN NUMBER RPAREN
             | LET_GO LPAREN NUMBER RPAREN
             | POP LPAREN NUMBER RPAREN
-            | TURN_TO_MY LPAREN ID RPAREN
+            | TURN_TO_MY LPAREN direction1 RPAREN
             | GRAB LPAREN ID RPAREN 
             | SAFE_EXE LPAREN stmt RPAREN
             | MOVES LPAREN param_list RPAREN
@@ -120,24 +140,29 @@ def p_stmt(p):
             | REP NUMBER TIMES block
             | NOP
             | TURN_RIGHT LPAREN ID RPAREN
-            | TURN_TO_THE LPAREN ID RPAREN
+            | TURN_TO_THE LPAREN direction2 RPAREN
             | PICK LPAREN ID RPAREN
             | GOTO LPAREN ID RPAREN
             | DROP_CHIP LPAREN NUMBER RPAREN
             | PLACE_BALLOON LPAREN NUMBER RPAREN
             | GRAB_BALLOON LPAREN NUMBER RPAREN
             | PICKUP_CHIP LPAREN NUMBER RPAREN
-            | POP_BALLOON LPAREN NUMBER RPAREN'''
+            | POP_BALLOON LPAREN NUMBER RPAREN
+            '''
     pass
 
 def p_stmt_do_while(p):
-    '''stmt : DO block OD'''
+    '''stmt : WHILE condition DO block OD'''
     pass
 
 def p_param_list(p):
     '''param_list : ID COMMA param_list
                   | ID
                   | empty'''
+    pass
+
+def p_stmt_macro_call(p):
+    '''stmt : ID LPAREN param_list RPAREN SEMICOLON'''
     pass
 
 def p_condition(p):
@@ -162,7 +187,7 @@ def p_empty(p):
 
 def p_error(p):
     if p:
-        print(f"Error de sintaxis en '{p.value}', linea {p.lineno}")
+        print(f"Error de sintaxis en '{p.value}'")
     else:
         print("Error de sintaxis al final del archivo")
 
@@ -190,7 +215,7 @@ def analyze_file(filename):
         
     result = parser.parse(data)
     
-    if result is None:
+    if result is not None:
         return True
     else:
         return False
