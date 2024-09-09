@@ -1,28 +1,11 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    DROP_CHIP
-    EQUALS
-    GOTO
-    GRAB_BALLOON
-    NEW_MACRO
-    NEW_VAR
-    PICK
-    PICKUP_CHIP
-    PLACE_BALLOON
-    PLUS
-    POP_BALLOON
-    REP
-    TURN_RIGHT
-    TURN_TO_THE
-
 Grammar
 
 Rule 0     S' -> program
 Rule 1     program -> EXEC block
-Rule 2     program -> NEW VAR ID ASSIGN NUMBER
-Rule 3     program -> NEW MACRO ID LPAREN param_list RPAREN block
+Rule 2     program -> NEW_VAR ID ASSIGN NUMBER
+Rule 3     program -> NEW_MACRO ID LPAREN param_list RPAREN block
 Rule 4     block -> LBRACE stmt_list RBRACE
 Rule 5     stmt_list -> stmt SEMICOLON stmt_list
 Rule 6     stmt_list -> stmt SEMICOLON
@@ -38,80 +21,99 @@ Rule 15    stmt -> GRAB LPAREN ID RPAREN
 Rule 16    stmt -> SAFE_EXE LPAREN stmt RPAREN
 Rule 17    stmt -> MOVES LPAREN param_list RPAREN
 Rule 18    stmt -> ID LPAREN param_list RPAREN
-Rule 19    stmt -> REPEAT NUMBER TIMES block
+Rule 19    stmt -> REP NUMBER TIMES block
 Rule 20    stmt -> NOP
-Rule 21    stmt -> DO block OD
-Rule 22    param_list -> ID COMMA param_list
-Rule 23    param_list -> ID
-Rule 24    param_list -> empty
-Rule 25    condition -> NOT LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN
-Rule 26    condition -> NOT LPAREN ZERO QUESTION LPAREN ID RPAREN RPAREN
-Rule 27    condition -> IS_BLOCKED LPAREN ID RPAREN
-Rule 28    condition -> ZERO QUESTION LPAREN ID RPAREN
-Rule 29    condition -> IS_FACING LPAREN ID RPAREN
-Rule 30    empty -> <empty>
+Rule 21    stmt -> TURN_RIGHT LPAREN ID RPAREN
+Rule 22    stmt -> TURN_TO_THE LPAREN ID RPAREN
+Rule 23    stmt -> PICK LPAREN ID RPAREN
+Rule 24    stmt -> GOTO LPAREN ID RPAREN
+Rule 25    stmt -> DROP_CHIP LPAREN NUMBER RPAREN
+Rule 26    stmt -> PLACE_BALLOON LPAREN NUMBER RPAREN
+Rule 27    stmt -> GRAB_BALLOON LPAREN NUMBER RPAREN
+Rule 28    stmt -> PICKUP_CHIP LPAREN NUMBER RPAREN
+Rule 29    stmt -> POP_BALLOON LPAREN NUMBER RPAREN
+Rule 30    stmt -> DO block OD
+Rule 31    param_list -> ID COMMA param_list
+Rule 32    param_list -> ID
+Rule 33    param_list -> empty
+Rule 34    condition -> NOT LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN
+Rule 35    condition -> NOT LPAREN ZERO QUESTION LPAREN ID RPAREN RPAREN
+Rule 36    condition -> IS_BLOCKED LPAREN ID RPAREN
+Rule 37    condition -> ZERO QUESTION LPAREN ID RPAREN
+Rule 38    condition -> IS_FACING LPAREN ID RPAREN
+Rule 39    condition -> SIZE
+Rule 40    condition -> MYX
+Rule 41    condition -> MYY
+Rule 42    condition -> MYCHIPS
+Rule 43    condition -> MYBALLOONS
+Rule 44    condition -> BALLOONSHERE
+Rule 45    condition -> CHIPSHERE
+Rule 46    condition -> ROOMFORCHIPS
+Rule 47    empty -> <empty>
 
 Terminals, with rules where they appear
 
 ASSIGN               : 2
-COMMA                : 22
-DO                   : 21
+BALLOONSHERE         : 44
+CHIPSHERE            : 45
+COMMA                : 31
+DO                   : 30
 DROP                 : 10
-DROP_CHIP            : 
+DROP_CHIP            : 25
 ELSE                 : 7
-EQUALS               : 
 EXEC                 : 1
 FI                   : 7
-GOTO                 : 
+GOTO                 : 24
 GRAB                 : 15
-GRAB_BALLOON         : 
-ID                   : 2 3 14 15 18 22 23 25 26 27 28 29
+GRAB_BALLOON         : 27
+ID                   : 2 3 14 15 18 21 22 23 24 31 32 34 35 36 37 38
 IF                   : 7
-IS_BLOCKED           : 25 27
-IS_FACING            : 29
+IS_BLOCKED           : 34 36
+IS_FACING            : 38
 JUMP                 : 9
 LBRACE               : 4
 LET_GO               : 12
-LPAREN               : 3 8 9 10 11 12 13 14 15 16 17 18 25 25 26 26 27 28 29
-MACRO                : 3
+LPAREN               : 3 8 9 10 11 12 13 14 15 16 17 18 21 22 23 24 25 26 27 28 29 34 34 35 35 36 37 38
 MOVE                 : 11
 MOVES                : 17
-NEW                  : 2 3
-NEW_MACRO            : 
-NEW_VAR              : 
+MYBALLOONS           : 43
+MYCHIPS              : 42
+MYX                  : 40
+MYY                  : 41
+NEW_MACRO            : 3
+NEW_VAR              : 2
 NOP                  : 20
-NOT                  : 25 26
-NUMBER               : 2 8 9 10 11 12 13 19
-OD                   : 21
-PICK                 : 
-PICKUP_CHIP          : 
-PLACE_BALLOON        : 
-PLUS                 : 
+NOT                  : 34 35
+NUMBER               : 2 8 9 10 11 12 13 19 25 26 27 28 29
+OD                   : 30
+PICK                 : 23
+PICKUP_CHIP          : 28
+PLACE_BALLOON        : 26
 POP                  : 13
-POP_BALLOON          : 
-QUESTION             : 26 28
+POP_BALLOON          : 29
+QUESTION             : 35 37
 RBRACE               : 4
-REP                  : 
-REPEAT               : 19
-RPAREN               : 3 8 9 10 11 12 13 14 15 16 17 18 25 25 26 26 27 28 29
+REP                  : 19
+ROOMFORCHIPS         : 46
+RPAREN               : 3 8 9 10 11 12 13 14 15 16 17 18 21 22 23 24 25 26 27 28 29 34 34 35 35 36 37 38
 SAFE_EXE             : 16
 SEMICOLON            : 5 6
+SIZE                 : 39
 THEN                 : 7
 TIMES                : 19
-TURN_RIGHT           : 
+TURN_RIGHT           : 21
 TURN_TO_MY           : 14
-TURN_TO_THE          : 
-VAR                  : 2
+TURN_TO_THE          : 22
 WALK                 : 8
-ZERO                 : 26 28
+ZERO                 : 35 37
 error                : 
 
 Nonterminals, with rules where they appear
 
-block                : 1 3 7 7 19 21
+block                : 1 3 7 7 19 30
 condition            : 7
-empty                : 24
-param_list           : 3 17 18 22
+empty                : 33
+param_list           : 3 17 18 31
 program              : 0
 stmt                 : 5 6 16
 stmt_list            : 4 5
@@ -122,11 +124,12 @@ state 0
 
     (0) S' -> . program
     (1) program -> . EXEC block
-    (2) program -> . NEW VAR ID ASSIGN NUMBER
-    (3) program -> . NEW MACRO ID LPAREN param_list RPAREN block
+    (2) program -> . NEW_VAR ID ASSIGN NUMBER
+    (3) program -> . NEW_MACRO ID LPAREN param_list RPAREN block
 
     EXEC            shift and go to state 2
-    NEW             shift and go to state 3
+    NEW_VAR         shift and go to state 3
+    NEW_MACRO       shift and go to state 4
 
     program                        shift and go to state 1
 
@@ -141,27 +144,32 @@ state 2
     (1) program -> EXEC . block
     (4) block -> . LBRACE stmt_list RBRACE
 
-    LBRACE          shift and go to state 5
+    LBRACE          shift and go to state 6
 
-    block                          shift and go to state 4
+    block                          shift and go to state 5
 
 state 3
 
-    (2) program -> NEW . VAR ID ASSIGN NUMBER
-    (3) program -> NEW . MACRO ID LPAREN param_list RPAREN block
+    (2) program -> NEW_VAR . ID ASSIGN NUMBER
 
-    VAR             shift and go to state 6
-    MACRO           shift and go to state 7
+    ID              shift and go to state 7
 
 
 state 4
+
+    (3) program -> NEW_MACRO . ID LPAREN param_list RPAREN block
+
+    ID              shift and go to state 8
+
+
+state 5
 
     (1) program -> EXEC block .
 
     $end            reduce using rule 1 (program -> EXEC block .)
 
 
-state 5
+state 6
 
     (4) block -> LBRACE . stmt_list RBRACE
     (5) stmt_list -> . stmt SEMICOLON stmt_list
@@ -178,159 +186,193 @@ state 5
     (16) stmt -> . SAFE_EXE LPAREN stmt RPAREN
     (17) stmt -> . MOVES LPAREN param_list RPAREN
     (18) stmt -> . ID LPAREN param_list RPAREN
-    (19) stmt -> . REPEAT NUMBER TIMES block
+    (19) stmt -> . REP NUMBER TIMES block
     (20) stmt -> . NOP
-    (21) stmt -> . DO block OD
+    (21) stmt -> . TURN_RIGHT LPAREN ID RPAREN
+    (22) stmt -> . TURN_TO_THE LPAREN ID RPAREN
+    (23) stmt -> . PICK LPAREN ID RPAREN
+    (24) stmt -> . GOTO LPAREN ID RPAREN
+    (25) stmt -> . DROP_CHIP LPAREN NUMBER RPAREN
+    (26) stmt -> . PLACE_BALLOON LPAREN NUMBER RPAREN
+    (27) stmt -> . GRAB_BALLOON LPAREN NUMBER RPAREN
+    (28) stmt -> . PICKUP_CHIP LPAREN NUMBER RPAREN
+    (29) stmt -> . POP_BALLOON LPAREN NUMBER RPAREN
+    (30) stmt -> . DO block OD
 
-    IF              shift and go to state 10
-    WALK            shift and go to state 11
-    JUMP            shift and go to state 12
-    DROP            shift and go to state 13
-    MOVE            shift and go to state 14
-    LET_GO          shift and go to state 15
-    POP             shift and go to state 16
-    TURN_TO_MY      shift and go to state 17
-    GRAB            shift and go to state 19
-    SAFE_EXE        shift and go to state 20
-    MOVES           shift and go to state 21
-    ID              shift and go to state 18
-    REPEAT          shift and go to state 22
-    NOP             shift and go to state 23
-    DO              shift and go to state 24
+    IF              shift and go to state 11
+    WALK            shift and go to state 12
+    JUMP            shift and go to state 13
+    DROP            shift and go to state 14
+    MOVE            shift and go to state 15
+    LET_GO          shift and go to state 16
+    POP             shift and go to state 17
+    TURN_TO_MY      shift and go to state 18
+    GRAB            shift and go to state 20
+    SAFE_EXE        shift and go to state 21
+    MOVES           shift and go to state 22
+    ID              shift and go to state 19
+    REP             shift and go to state 23
+    NOP             shift and go to state 24
+    TURN_RIGHT      shift and go to state 25
+    TURN_TO_THE     shift and go to state 26
+    PICK            shift and go to state 27
+    GOTO            shift and go to state 28
+    DROP_CHIP       shift and go to state 29
+    PLACE_BALLOON   shift and go to state 30
+    GRAB_BALLOON    shift and go to state 31
+    PICKUP_CHIP     shift and go to state 32
+    POP_BALLOON     shift and go to state 33
+    DO              shift and go to state 34
 
-    stmt_list                      shift and go to state 8
-    stmt                           shift and go to state 9
-
-state 6
-
-    (2) program -> NEW VAR . ID ASSIGN NUMBER
-
-    ID              shift and go to state 25
-
+    stmt_list                      shift and go to state 9
+    stmt                           shift and go to state 10
 
 state 7
 
-    (3) program -> NEW MACRO . ID LPAREN param_list RPAREN block
+    (2) program -> NEW_VAR ID . ASSIGN NUMBER
 
-    ID              shift and go to state 26
+    ASSIGN          shift and go to state 35
 
 
 state 8
 
-    (4) block -> LBRACE stmt_list . RBRACE
-
-    RBRACE          shift and go to state 27
-
-
-state 9
-
-    (5) stmt_list -> stmt . SEMICOLON stmt_list
-    (6) stmt_list -> stmt . SEMICOLON
-
-    SEMICOLON       shift and go to state 28
-
-
-state 10
-
-    (7) stmt -> IF . condition THEN block ELSE block FI
-    (25) condition -> . NOT LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN
-    (26) condition -> . NOT LPAREN ZERO QUESTION LPAREN ID RPAREN RPAREN
-    (27) condition -> . IS_BLOCKED LPAREN ID RPAREN
-    (28) condition -> . ZERO QUESTION LPAREN ID RPAREN
-    (29) condition -> . IS_FACING LPAREN ID RPAREN
-
-    NOT             shift and go to state 30
-    IS_BLOCKED      shift and go to state 31
-    ZERO            shift and go to state 32
-    IS_FACING       shift and go to state 33
-
-    condition                      shift and go to state 29
-
-state 11
-
-    (8) stmt -> WALK . LPAREN NUMBER RPAREN
-
-    LPAREN          shift and go to state 34
-
-
-state 12
-
-    (9) stmt -> JUMP . LPAREN NUMBER RPAREN
-
-    LPAREN          shift and go to state 35
-
-
-state 13
-
-    (10) stmt -> DROP . LPAREN NUMBER RPAREN
+    (3) program -> NEW_MACRO ID . LPAREN param_list RPAREN block
 
     LPAREN          shift and go to state 36
 
 
+state 9
+
+    (4) block -> LBRACE stmt_list . RBRACE
+
+    RBRACE          shift and go to state 37
+
+
+state 10
+
+    (5) stmt_list -> stmt . SEMICOLON stmt_list
+    (6) stmt_list -> stmt . SEMICOLON
+
+    SEMICOLON       shift and go to state 38
+
+
+state 11
+
+    (7) stmt -> IF . condition THEN block ELSE block FI
+    (34) condition -> . NOT LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN
+    (35) condition -> . NOT LPAREN ZERO QUESTION LPAREN ID RPAREN RPAREN
+    (36) condition -> . IS_BLOCKED LPAREN ID RPAREN
+    (37) condition -> . ZERO QUESTION LPAREN ID RPAREN
+    (38) condition -> . IS_FACING LPAREN ID RPAREN
+    (39) condition -> . SIZE
+    (40) condition -> . MYX
+    (41) condition -> . MYY
+    (42) condition -> . MYCHIPS
+    (43) condition -> . MYBALLOONS
+    (44) condition -> . BALLOONSHERE
+    (45) condition -> . CHIPSHERE
+    (46) condition -> . ROOMFORCHIPS
+
+    NOT             shift and go to state 40
+    IS_BLOCKED      shift and go to state 41
+    ZERO            shift and go to state 42
+    IS_FACING       shift and go to state 43
+    SIZE            shift and go to state 44
+    MYX             shift and go to state 45
+    MYY             shift and go to state 46
+    MYCHIPS         shift and go to state 47
+    MYBALLOONS      shift and go to state 48
+    BALLOONSHERE    shift and go to state 49
+    CHIPSHERE       shift and go to state 50
+    ROOMFORCHIPS    shift and go to state 51
+
+    condition                      shift and go to state 39
+
+state 12
+
+    (8) stmt -> WALK . LPAREN NUMBER RPAREN
+
+    LPAREN          shift and go to state 52
+
+
+state 13
+
+    (9) stmt -> JUMP . LPAREN NUMBER RPAREN
+
+    LPAREN          shift and go to state 53
+
+
 state 14
 
-    (11) stmt -> MOVE . LPAREN NUMBER RPAREN
+    (10) stmt -> DROP . LPAREN NUMBER RPAREN
 
-    LPAREN          shift and go to state 37
+    LPAREN          shift and go to state 54
 
 
 state 15
 
-    (12) stmt -> LET_GO . LPAREN NUMBER RPAREN
+    (11) stmt -> MOVE . LPAREN NUMBER RPAREN
 
-    LPAREN          shift and go to state 38
+    LPAREN          shift and go to state 55
 
 
 state 16
 
-    (13) stmt -> POP . LPAREN NUMBER RPAREN
+    (12) stmt -> LET_GO . LPAREN NUMBER RPAREN
 
-    LPAREN          shift and go to state 39
+    LPAREN          shift and go to state 56
 
 
 state 17
 
-    (14) stmt -> TURN_TO_MY . LPAREN ID RPAREN
+    (13) stmt -> POP . LPAREN NUMBER RPAREN
 
-    LPAREN          shift and go to state 40
+    LPAREN          shift and go to state 57
 
 
 state 18
 
-    (18) stmt -> ID . LPAREN param_list RPAREN
+    (14) stmt -> TURN_TO_MY . LPAREN ID RPAREN
 
-    LPAREN          shift and go to state 41
+    LPAREN          shift and go to state 58
 
 
 state 19
 
-    (15) stmt -> GRAB . LPAREN ID RPAREN
+    (18) stmt -> ID . LPAREN param_list RPAREN
 
-    LPAREN          shift and go to state 42
+    LPAREN          shift and go to state 59
 
 
 state 20
 
-    (16) stmt -> SAFE_EXE . LPAREN stmt RPAREN
+    (15) stmt -> GRAB . LPAREN ID RPAREN
 
-    LPAREN          shift and go to state 43
+    LPAREN          shift and go to state 60
 
 
 state 21
 
-    (17) stmt -> MOVES . LPAREN param_list RPAREN
+    (16) stmt -> SAFE_EXE . LPAREN stmt RPAREN
 
-    LPAREN          shift and go to state 44
+    LPAREN          shift and go to state 61
 
 
 state 22
 
-    (19) stmt -> REPEAT . NUMBER TIMES block
+    (17) stmt -> MOVES . LPAREN param_list RPAREN
 
-    NUMBER          shift and go to state 45
+    LPAREN          shift and go to state 62
 
 
 state 23
+
+    (19) stmt -> REP . NUMBER TIMES block
+
+    NUMBER          shift and go to state 63
+
+
+state 24
 
     (20) stmt -> NOP .
 
@@ -338,30 +380,100 @@ state 23
     RPAREN          reduce using rule 20 (stmt -> NOP .)
 
 
-state 24
-
-    (21) stmt -> DO . block OD
-    (4) block -> . LBRACE stmt_list RBRACE
-
-    LBRACE          shift and go to state 5
-
-    block                          shift and go to state 46
-
 state 25
 
-    (2) program -> NEW VAR ID . ASSIGN NUMBER
+    (21) stmt -> TURN_RIGHT . LPAREN ID RPAREN
 
-    ASSIGN          shift and go to state 47
+    LPAREN          shift and go to state 64
 
 
 state 26
 
-    (3) program -> NEW MACRO ID . LPAREN param_list RPAREN block
+    (22) stmt -> TURN_TO_THE . LPAREN ID RPAREN
 
-    LPAREN          shift and go to state 48
+    LPAREN          shift and go to state 65
 
 
 state 27
+
+    (23) stmt -> PICK . LPAREN ID RPAREN
+
+    LPAREN          shift and go to state 66
+
+
+state 28
+
+    (24) stmt -> GOTO . LPAREN ID RPAREN
+
+    LPAREN          shift and go to state 67
+
+
+state 29
+
+    (25) stmt -> DROP_CHIP . LPAREN NUMBER RPAREN
+
+    LPAREN          shift and go to state 68
+
+
+state 30
+
+    (26) stmt -> PLACE_BALLOON . LPAREN NUMBER RPAREN
+
+    LPAREN          shift and go to state 69
+
+
+state 31
+
+    (27) stmt -> GRAB_BALLOON . LPAREN NUMBER RPAREN
+
+    LPAREN          shift and go to state 70
+
+
+state 32
+
+    (28) stmt -> PICKUP_CHIP . LPAREN NUMBER RPAREN
+
+    LPAREN          shift and go to state 71
+
+
+state 33
+
+    (29) stmt -> POP_BALLOON . LPAREN NUMBER RPAREN
+
+    LPAREN          shift and go to state 72
+
+
+state 34
+
+    (30) stmt -> DO . block OD
+    (4) block -> . LBRACE stmt_list RBRACE
+
+    LBRACE          shift and go to state 6
+
+    block                          shift and go to state 73
+
+state 35
+
+    (2) program -> NEW_VAR ID ASSIGN . NUMBER
+
+    NUMBER          shift and go to state 74
+
+
+state 36
+
+    (3) program -> NEW_MACRO ID LPAREN . param_list RPAREN block
+    (31) param_list -> . ID COMMA param_list
+    (32) param_list -> . ID
+    (33) param_list -> . empty
+    (47) empty -> .
+
+    ID              shift and go to state 75
+    RPAREN          reduce using rule 47 (empty -> .)
+
+    param_list                     shift and go to state 76
+    empty                          shift and go to state 77
+
+state 37
 
     (4) block -> LBRACE stmt_list RBRACE .
 
@@ -373,7 +485,7 @@ state 27
     FI              reduce using rule 4 (block -> LBRACE stmt_list RBRACE .)
 
 
-state 28
+state 38
 
     (5) stmt_list -> stmt SEMICOLON . stmt_list
     (6) stmt_list -> stmt SEMICOLON .
@@ -391,137 +503,211 @@ state 28
     (16) stmt -> . SAFE_EXE LPAREN stmt RPAREN
     (17) stmt -> . MOVES LPAREN param_list RPAREN
     (18) stmt -> . ID LPAREN param_list RPAREN
-    (19) stmt -> . REPEAT NUMBER TIMES block
+    (19) stmt -> . REP NUMBER TIMES block
     (20) stmt -> . NOP
-    (21) stmt -> . DO block OD
+    (21) stmt -> . TURN_RIGHT LPAREN ID RPAREN
+    (22) stmt -> . TURN_TO_THE LPAREN ID RPAREN
+    (23) stmt -> . PICK LPAREN ID RPAREN
+    (24) stmt -> . GOTO LPAREN ID RPAREN
+    (25) stmt -> . DROP_CHIP LPAREN NUMBER RPAREN
+    (26) stmt -> . PLACE_BALLOON LPAREN NUMBER RPAREN
+    (27) stmt -> . GRAB_BALLOON LPAREN NUMBER RPAREN
+    (28) stmt -> . PICKUP_CHIP LPAREN NUMBER RPAREN
+    (29) stmt -> . POP_BALLOON LPAREN NUMBER RPAREN
+    (30) stmt -> . DO block OD
 
     RBRACE          reduce using rule 6 (stmt_list -> stmt SEMICOLON .)
-    IF              shift and go to state 10
-    WALK            shift and go to state 11
-    JUMP            shift and go to state 12
-    DROP            shift and go to state 13
-    MOVE            shift and go to state 14
-    LET_GO          shift and go to state 15
-    POP             shift and go to state 16
-    TURN_TO_MY      shift and go to state 17
-    GRAB            shift and go to state 19
-    SAFE_EXE        shift and go to state 20
-    MOVES           shift and go to state 21
-    ID              shift and go to state 18
-    REPEAT          shift and go to state 22
-    NOP             shift and go to state 23
-    DO              shift and go to state 24
+    IF              shift and go to state 11
+    WALK            shift and go to state 12
+    JUMP            shift and go to state 13
+    DROP            shift and go to state 14
+    MOVE            shift and go to state 15
+    LET_GO          shift and go to state 16
+    POP             shift and go to state 17
+    TURN_TO_MY      shift and go to state 18
+    GRAB            shift and go to state 20
+    SAFE_EXE        shift and go to state 21
+    MOVES           shift and go to state 22
+    ID              shift and go to state 19
+    REP             shift and go to state 23
+    NOP             shift and go to state 24
+    TURN_RIGHT      shift and go to state 25
+    TURN_TO_THE     shift and go to state 26
+    PICK            shift and go to state 27
+    GOTO            shift and go to state 28
+    DROP_CHIP       shift and go to state 29
+    PLACE_BALLOON   shift and go to state 30
+    GRAB_BALLOON    shift and go to state 31
+    PICKUP_CHIP     shift and go to state 32
+    POP_BALLOON     shift and go to state 33
+    DO              shift and go to state 34
 
-    stmt                           shift and go to state 9
-    stmt_list                      shift and go to state 49
-
-state 29
-
-    (7) stmt -> IF condition . THEN block ELSE block FI
-
-    THEN            shift and go to state 50
-
-
-state 30
-
-    (25) condition -> NOT . LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN
-    (26) condition -> NOT . LPAREN ZERO QUESTION LPAREN ID RPAREN RPAREN
-
-    LPAREN          shift and go to state 51
-
-
-state 31
-
-    (27) condition -> IS_BLOCKED . LPAREN ID RPAREN
-
-    LPAREN          shift and go to state 52
-
-
-state 32
-
-    (28) condition -> ZERO . QUESTION LPAREN ID RPAREN
-
-    QUESTION        shift and go to state 53
-
-
-state 33
-
-    (29) condition -> IS_FACING . LPAREN ID RPAREN
-
-    LPAREN          shift and go to state 54
-
-
-state 34
-
-    (8) stmt -> WALK LPAREN . NUMBER RPAREN
-
-    NUMBER          shift and go to state 55
-
-
-state 35
-
-    (9) stmt -> JUMP LPAREN . NUMBER RPAREN
-
-    NUMBER          shift and go to state 56
-
-
-state 36
-
-    (10) stmt -> DROP LPAREN . NUMBER RPAREN
-
-    NUMBER          shift and go to state 57
-
-
-state 37
-
-    (11) stmt -> MOVE LPAREN . NUMBER RPAREN
-
-    NUMBER          shift and go to state 58
-
-
-state 38
-
-    (12) stmt -> LET_GO LPAREN . NUMBER RPAREN
-
-    NUMBER          shift and go to state 59
-
+    stmt                           shift and go to state 10
+    stmt_list                      shift and go to state 78
 
 state 39
 
-    (13) stmt -> POP LPAREN . NUMBER RPAREN
+    (7) stmt -> IF condition . THEN block ELSE block FI
 
-    NUMBER          shift and go to state 60
+    THEN            shift and go to state 79
 
 
 state 40
 
-    (14) stmt -> TURN_TO_MY LPAREN . ID RPAREN
+    (34) condition -> NOT . LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN
+    (35) condition -> NOT . LPAREN ZERO QUESTION LPAREN ID RPAREN RPAREN
 
-    ID              shift and go to state 61
+    LPAREN          shift and go to state 80
 
 
 state 41
 
-    (18) stmt -> ID LPAREN . param_list RPAREN
-    (22) param_list -> . ID COMMA param_list
-    (23) param_list -> . ID
-    (24) param_list -> . empty
-    (30) empty -> .
+    (36) condition -> IS_BLOCKED . LPAREN ID RPAREN
 
-    ID              shift and go to state 62
-    RPAREN          reduce using rule 30 (empty -> .)
+    LPAREN          shift and go to state 81
 
-    param_list                     shift and go to state 63
-    empty                          shift and go to state 64
 
 state 42
 
-    (15) stmt -> GRAB LPAREN . ID RPAREN
+    (37) condition -> ZERO . QUESTION LPAREN ID RPAREN
 
-    ID              shift and go to state 65
+    QUESTION        shift and go to state 82
 
 
 state 43
+
+    (38) condition -> IS_FACING . LPAREN ID RPAREN
+
+    LPAREN          shift and go to state 83
+
+
+state 44
+
+    (39) condition -> SIZE .
+
+    THEN            reduce using rule 39 (condition -> SIZE .)
+
+
+state 45
+
+    (40) condition -> MYX .
+
+    THEN            reduce using rule 40 (condition -> MYX .)
+
+
+state 46
+
+    (41) condition -> MYY .
+
+    THEN            reduce using rule 41 (condition -> MYY .)
+
+
+state 47
+
+    (42) condition -> MYCHIPS .
+
+    THEN            reduce using rule 42 (condition -> MYCHIPS .)
+
+
+state 48
+
+    (43) condition -> MYBALLOONS .
+
+    THEN            reduce using rule 43 (condition -> MYBALLOONS .)
+
+
+state 49
+
+    (44) condition -> BALLOONSHERE .
+
+    THEN            reduce using rule 44 (condition -> BALLOONSHERE .)
+
+
+state 50
+
+    (45) condition -> CHIPSHERE .
+
+    THEN            reduce using rule 45 (condition -> CHIPSHERE .)
+
+
+state 51
+
+    (46) condition -> ROOMFORCHIPS .
+
+    THEN            reduce using rule 46 (condition -> ROOMFORCHIPS .)
+
+
+state 52
+
+    (8) stmt -> WALK LPAREN . NUMBER RPAREN
+
+    NUMBER          shift and go to state 84
+
+
+state 53
+
+    (9) stmt -> JUMP LPAREN . NUMBER RPAREN
+
+    NUMBER          shift and go to state 85
+
+
+state 54
+
+    (10) stmt -> DROP LPAREN . NUMBER RPAREN
+
+    NUMBER          shift and go to state 86
+
+
+state 55
+
+    (11) stmt -> MOVE LPAREN . NUMBER RPAREN
+
+    NUMBER          shift and go to state 87
+
+
+state 56
+
+    (12) stmt -> LET_GO LPAREN . NUMBER RPAREN
+
+    NUMBER          shift and go to state 88
+
+
+state 57
+
+    (13) stmt -> POP LPAREN . NUMBER RPAREN
+
+    NUMBER          shift and go to state 89
+
+
+state 58
+
+    (14) stmt -> TURN_TO_MY LPAREN . ID RPAREN
+
+    ID              shift and go to state 90
+
+
+state 59
+
+    (18) stmt -> ID LPAREN . param_list RPAREN
+    (31) param_list -> . ID COMMA param_list
+    (32) param_list -> . ID
+    (33) param_list -> . empty
+    (47) empty -> .
+
+    ID              shift and go to state 75
+    RPAREN          reduce using rule 47 (empty -> .)
+
+    param_list                     shift and go to state 91
+    empty                          shift and go to state 77
+
+state 60
+
+    (15) stmt -> GRAB LPAREN . ID RPAREN
+
+    ID              shift and go to state 92
+
+
+state 61
 
     (16) stmt -> SAFE_EXE LPAREN . stmt RPAREN
     (7) stmt -> . IF condition THEN block ELSE block FI
@@ -536,290 +722,436 @@ state 43
     (16) stmt -> . SAFE_EXE LPAREN stmt RPAREN
     (17) stmt -> . MOVES LPAREN param_list RPAREN
     (18) stmt -> . ID LPAREN param_list RPAREN
-    (19) stmt -> . REPEAT NUMBER TIMES block
+    (19) stmt -> . REP NUMBER TIMES block
     (20) stmt -> . NOP
-    (21) stmt -> . DO block OD
+    (21) stmt -> . TURN_RIGHT LPAREN ID RPAREN
+    (22) stmt -> . TURN_TO_THE LPAREN ID RPAREN
+    (23) stmt -> . PICK LPAREN ID RPAREN
+    (24) stmt -> . GOTO LPAREN ID RPAREN
+    (25) stmt -> . DROP_CHIP LPAREN NUMBER RPAREN
+    (26) stmt -> . PLACE_BALLOON LPAREN NUMBER RPAREN
+    (27) stmt -> . GRAB_BALLOON LPAREN NUMBER RPAREN
+    (28) stmt -> . PICKUP_CHIP LPAREN NUMBER RPAREN
+    (29) stmt -> . POP_BALLOON LPAREN NUMBER RPAREN
+    (30) stmt -> . DO block OD
 
-    IF              shift and go to state 10
-    WALK            shift and go to state 11
-    JUMP            shift and go to state 12
-    DROP            shift and go to state 13
-    MOVE            shift and go to state 14
-    LET_GO          shift and go to state 15
-    POP             shift and go to state 16
-    TURN_TO_MY      shift and go to state 17
-    GRAB            shift and go to state 19
-    SAFE_EXE        shift and go to state 20
-    MOVES           shift and go to state 21
-    ID              shift and go to state 18
-    REPEAT          shift and go to state 22
-    NOP             shift and go to state 23
-    DO              shift and go to state 24
+    IF              shift and go to state 11
+    WALK            shift and go to state 12
+    JUMP            shift and go to state 13
+    DROP            shift and go to state 14
+    MOVE            shift and go to state 15
+    LET_GO          shift and go to state 16
+    POP             shift and go to state 17
+    TURN_TO_MY      shift and go to state 18
+    GRAB            shift and go to state 20
+    SAFE_EXE        shift and go to state 21
+    MOVES           shift and go to state 22
+    ID              shift and go to state 19
+    REP             shift and go to state 23
+    NOP             shift and go to state 24
+    TURN_RIGHT      shift and go to state 25
+    TURN_TO_THE     shift and go to state 26
+    PICK            shift and go to state 27
+    GOTO            shift and go to state 28
+    DROP_CHIP       shift and go to state 29
+    PLACE_BALLOON   shift and go to state 30
+    GRAB_BALLOON    shift and go to state 31
+    PICKUP_CHIP     shift and go to state 32
+    POP_BALLOON     shift and go to state 33
+    DO              shift and go to state 34
 
-    stmt                           shift and go to state 66
+    stmt                           shift and go to state 93
 
-state 44
+state 62
 
     (17) stmt -> MOVES LPAREN . param_list RPAREN
-    (22) param_list -> . ID COMMA param_list
-    (23) param_list -> . ID
-    (24) param_list -> . empty
-    (30) empty -> .
+    (31) param_list -> . ID COMMA param_list
+    (32) param_list -> . ID
+    (33) param_list -> . empty
+    (47) empty -> .
 
-    ID              shift and go to state 62
-    RPAREN          reduce using rule 30 (empty -> .)
+    ID              shift and go to state 75
+    RPAREN          reduce using rule 47 (empty -> .)
 
-    param_list                     shift and go to state 67
-    empty                          shift and go to state 64
+    param_list                     shift and go to state 94
+    empty                          shift and go to state 77
 
-state 45
+state 63
 
-    (19) stmt -> REPEAT NUMBER . TIMES block
+    (19) stmt -> REP NUMBER . TIMES block
 
-    TIMES           shift and go to state 68
-
-
-state 46
-
-    (21) stmt -> DO block . OD
-
-    OD              shift and go to state 69
+    TIMES           shift and go to state 95
 
 
-state 47
+state 64
 
-    (2) program -> NEW VAR ID ASSIGN . NUMBER
+    (21) stmt -> TURN_RIGHT LPAREN . ID RPAREN
 
-    NUMBER          shift and go to state 70
+    ID              shift and go to state 96
 
 
-state 48
+state 65
 
-    (3) program -> NEW MACRO ID LPAREN . param_list RPAREN block
-    (22) param_list -> . ID COMMA param_list
-    (23) param_list -> . ID
-    (24) param_list -> . empty
-    (30) empty -> .
+    (22) stmt -> TURN_TO_THE LPAREN . ID RPAREN
 
-    ID              shift and go to state 62
-    RPAREN          reduce using rule 30 (empty -> .)
+    ID              shift and go to state 97
 
-    param_list                     shift and go to state 71
-    empty                          shift and go to state 64
 
-state 49
+state 66
+
+    (23) stmt -> PICK LPAREN . ID RPAREN
+
+    ID              shift and go to state 98
+
+
+state 67
+
+    (24) stmt -> GOTO LPAREN . ID RPAREN
+
+    ID              shift and go to state 99
+
+
+state 68
+
+    (25) stmt -> DROP_CHIP LPAREN . NUMBER RPAREN
+
+    NUMBER          shift and go to state 100
+
+
+state 69
+
+    (26) stmt -> PLACE_BALLOON LPAREN . NUMBER RPAREN
+
+    NUMBER          shift and go to state 101
+
+
+state 70
+
+    (27) stmt -> GRAB_BALLOON LPAREN . NUMBER RPAREN
+
+    NUMBER          shift and go to state 102
+
+
+state 71
+
+    (28) stmt -> PICKUP_CHIP LPAREN . NUMBER RPAREN
+
+    NUMBER          shift and go to state 103
+
+
+state 72
+
+    (29) stmt -> POP_BALLOON LPAREN . NUMBER RPAREN
+
+    NUMBER          shift and go to state 104
+
+
+state 73
+
+    (30) stmt -> DO block . OD
+
+    OD              shift and go to state 105
+
+
+state 74
+
+    (2) program -> NEW_VAR ID ASSIGN NUMBER .
+
+    $end            reduce using rule 2 (program -> NEW_VAR ID ASSIGN NUMBER .)
+
+
+state 75
+
+    (31) param_list -> ID . COMMA param_list
+    (32) param_list -> ID .
+
+    COMMA           shift and go to state 106
+    RPAREN          reduce using rule 32 (param_list -> ID .)
+
+
+state 76
+
+    (3) program -> NEW_MACRO ID LPAREN param_list . RPAREN block
+
+    RPAREN          shift and go to state 107
+
+
+state 77
+
+    (33) param_list -> empty .
+
+    RPAREN          reduce using rule 33 (param_list -> empty .)
+
+
+state 78
 
     (5) stmt_list -> stmt SEMICOLON stmt_list .
 
     RBRACE          reduce using rule 5 (stmt_list -> stmt SEMICOLON stmt_list .)
 
 
-state 50
+state 79
 
     (7) stmt -> IF condition THEN . block ELSE block FI
     (4) block -> . LBRACE stmt_list RBRACE
 
-    LBRACE          shift and go to state 5
+    LBRACE          shift and go to state 6
 
-    block                          shift and go to state 72
+    block                          shift and go to state 108
 
-state 51
+state 80
 
-    (25) condition -> NOT LPAREN . IS_BLOCKED LPAREN ID RPAREN RPAREN
-    (26) condition -> NOT LPAREN . ZERO QUESTION LPAREN ID RPAREN RPAREN
+    (34) condition -> NOT LPAREN . IS_BLOCKED LPAREN ID RPAREN RPAREN
+    (35) condition -> NOT LPAREN . ZERO QUESTION LPAREN ID RPAREN RPAREN
 
-    IS_BLOCKED      shift and go to state 73
-    ZERO            shift and go to state 74
-
-
-state 52
-
-    (27) condition -> IS_BLOCKED LPAREN . ID RPAREN
-
-    ID              shift and go to state 75
+    IS_BLOCKED      shift and go to state 109
+    ZERO            shift and go to state 110
 
 
-state 53
+state 81
 
-    (28) condition -> ZERO QUESTION . LPAREN ID RPAREN
+    (36) condition -> IS_BLOCKED LPAREN . ID RPAREN
 
-    LPAREN          shift and go to state 76
-
-
-state 54
-
-    (29) condition -> IS_FACING LPAREN . ID RPAREN
-
-    ID              shift and go to state 77
+    ID              shift and go to state 111
 
 
-state 55
+state 82
+
+    (37) condition -> ZERO QUESTION . LPAREN ID RPAREN
+
+    LPAREN          shift and go to state 112
+
+
+state 83
+
+    (38) condition -> IS_FACING LPAREN . ID RPAREN
+
+    ID              shift and go to state 113
+
+
+state 84
 
     (8) stmt -> WALK LPAREN NUMBER . RPAREN
 
-    RPAREN          shift and go to state 78
+    RPAREN          shift and go to state 114
 
 
-state 56
+state 85
 
     (9) stmt -> JUMP LPAREN NUMBER . RPAREN
 
-    RPAREN          shift and go to state 79
+    RPAREN          shift and go to state 115
 
 
-state 57
+state 86
 
     (10) stmt -> DROP LPAREN NUMBER . RPAREN
 
-    RPAREN          shift and go to state 80
+    RPAREN          shift and go to state 116
 
 
-state 58
+state 87
 
     (11) stmt -> MOVE LPAREN NUMBER . RPAREN
 
-    RPAREN          shift and go to state 81
+    RPAREN          shift and go to state 117
 
 
-state 59
+state 88
 
     (12) stmt -> LET_GO LPAREN NUMBER . RPAREN
 
-    RPAREN          shift and go to state 82
+    RPAREN          shift and go to state 118
 
 
-state 60
+state 89
 
     (13) stmt -> POP LPAREN NUMBER . RPAREN
 
-    RPAREN          shift and go to state 83
+    RPAREN          shift and go to state 119
 
 
-state 61
+state 90
 
     (14) stmt -> TURN_TO_MY LPAREN ID . RPAREN
 
-    RPAREN          shift and go to state 84
+    RPAREN          shift and go to state 120
 
 
-state 62
-
-    (22) param_list -> ID . COMMA param_list
-    (23) param_list -> ID .
-
-    COMMA           shift and go to state 85
-    RPAREN          reduce using rule 23 (param_list -> ID .)
-
-
-state 63
+state 91
 
     (18) stmt -> ID LPAREN param_list . RPAREN
 
-    RPAREN          shift and go to state 86
+    RPAREN          shift and go to state 121
 
 
-state 64
-
-    (24) param_list -> empty .
-
-    RPAREN          reduce using rule 24 (param_list -> empty .)
-
-
-state 65
+state 92
 
     (15) stmt -> GRAB LPAREN ID . RPAREN
 
-    RPAREN          shift and go to state 87
+    RPAREN          shift and go to state 122
 
 
-state 66
+state 93
 
     (16) stmt -> SAFE_EXE LPAREN stmt . RPAREN
 
-    RPAREN          shift and go to state 88
+    RPAREN          shift and go to state 123
 
 
-state 67
+state 94
 
     (17) stmt -> MOVES LPAREN param_list . RPAREN
 
-    RPAREN          shift and go to state 89
+    RPAREN          shift and go to state 124
 
 
-state 68
+state 95
 
-    (19) stmt -> REPEAT NUMBER TIMES . block
+    (19) stmt -> REP NUMBER TIMES . block
     (4) block -> . LBRACE stmt_list RBRACE
 
-    LBRACE          shift and go to state 5
+    LBRACE          shift and go to state 6
 
-    block                          shift and go to state 90
+    block                          shift and go to state 125
 
-state 69
+state 96
 
-    (21) stmt -> DO block OD .
+    (21) stmt -> TURN_RIGHT LPAREN ID . RPAREN
 
-    SEMICOLON       reduce using rule 21 (stmt -> DO block OD .)
-    RPAREN          reduce using rule 21 (stmt -> DO block OD .)
-
-
-state 70
-
-    (2) program -> NEW VAR ID ASSIGN NUMBER .
-
-    $end            reduce using rule 2 (program -> NEW VAR ID ASSIGN NUMBER .)
+    RPAREN          shift and go to state 126
 
 
-state 71
+state 97
 
-    (3) program -> NEW MACRO ID LPAREN param_list . RPAREN block
+    (22) stmt -> TURN_TO_THE LPAREN ID . RPAREN
 
-    RPAREN          shift and go to state 91
+    RPAREN          shift and go to state 127
 
 
-state 72
+state 98
+
+    (23) stmt -> PICK LPAREN ID . RPAREN
+
+    RPAREN          shift and go to state 128
+
+
+state 99
+
+    (24) stmt -> GOTO LPAREN ID . RPAREN
+
+    RPAREN          shift and go to state 129
+
+
+state 100
+
+    (25) stmt -> DROP_CHIP LPAREN NUMBER . RPAREN
+
+    RPAREN          shift and go to state 130
+
+
+state 101
+
+    (26) stmt -> PLACE_BALLOON LPAREN NUMBER . RPAREN
+
+    RPAREN          shift and go to state 131
+
+
+state 102
+
+    (27) stmt -> GRAB_BALLOON LPAREN NUMBER . RPAREN
+
+    RPAREN          shift and go to state 132
+
+
+state 103
+
+    (28) stmt -> PICKUP_CHIP LPAREN NUMBER . RPAREN
+
+    RPAREN          shift and go to state 133
+
+
+state 104
+
+    (29) stmt -> POP_BALLOON LPAREN NUMBER . RPAREN
+
+    RPAREN          shift and go to state 134
+
+
+state 105
+
+    (30) stmt -> DO block OD .
+
+    SEMICOLON       reduce using rule 30 (stmt -> DO block OD .)
+    RPAREN          reduce using rule 30 (stmt -> DO block OD .)
+
+
+state 106
+
+    (31) param_list -> ID COMMA . param_list
+    (31) param_list -> . ID COMMA param_list
+    (32) param_list -> . ID
+    (33) param_list -> . empty
+    (47) empty -> .
+
+    ID              shift and go to state 75
+    RPAREN          reduce using rule 47 (empty -> .)
+
+    param_list                     shift and go to state 135
+    empty                          shift and go to state 77
+
+state 107
+
+    (3) program -> NEW_MACRO ID LPAREN param_list RPAREN . block
+    (4) block -> . LBRACE stmt_list RBRACE
+
+    LBRACE          shift and go to state 6
+
+    block                          shift and go to state 136
+
+state 108
 
     (7) stmt -> IF condition THEN block . ELSE block FI
 
-    ELSE            shift and go to state 92
+    ELSE            shift and go to state 137
 
 
-state 73
+state 109
 
-    (25) condition -> NOT LPAREN IS_BLOCKED . LPAREN ID RPAREN RPAREN
+    (34) condition -> NOT LPAREN IS_BLOCKED . LPAREN ID RPAREN RPAREN
 
-    LPAREN          shift and go to state 93
-
-
-state 74
-
-    (26) condition -> NOT LPAREN ZERO . QUESTION LPAREN ID RPAREN RPAREN
-
-    QUESTION        shift and go to state 94
+    LPAREN          shift and go to state 138
 
 
-state 75
+state 110
 
-    (27) condition -> IS_BLOCKED LPAREN ID . RPAREN
+    (35) condition -> NOT LPAREN ZERO . QUESTION LPAREN ID RPAREN RPAREN
 
-    RPAREN          shift and go to state 95
-
-
-state 76
-
-    (28) condition -> ZERO QUESTION LPAREN . ID RPAREN
-
-    ID              shift and go to state 96
+    QUESTION        shift and go to state 139
 
 
-state 77
+state 111
 
-    (29) condition -> IS_FACING LPAREN ID . RPAREN
+    (36) condition -> IS_BLOCKED LPAREN ID . RPAREN
 
-    RPAREN          shift and go to state 97
+    RPAREN          shift and go to state 140
 
 
-state 78
+state 112
+
+    (37) condition -> ZERO QUESTION LPAREN . ID RPAREN
+
+    ID              shift and go to state 141
+
+
+state 113
+
+    (38) condition -> IS_FACING LPAREN ID . RPAREN
+
+    RPAREN          shift and go to state 142
+
+
+state 114
 
     (8) stmt -> WALK LPAREN NUMBER RPAREN .
 
@@ -827,7 +1159,7 @@ state 78
     RPAREN          reduce using rule 8 (stmt -> WALK LPAREN NUMBER RPAREN .)
 
 
-state 79
+state 115
 
     (9) stmt -> JUMP LPAREN NUMBER RPAREN .
 
@@ -835,7 +1167,7 @@ state 79
     RPAREN          reduce using rule 9 (stmt -> JUMP LPAREN NUMBER RPAREN .)
 
 
-state 80
+state 116
 
     (10) stmt -> DROP LPAREN NUMBER RPAREN .
 
@@ -843,7 +1175,7 @@ state 80
     RPAREN          reduce using rule 10 (stmt -> DROP LPAREN NUMBER RPAREN .)
 
 
-state 81
+state 117
 
     (11) stmt -> MOVE LPAREN NUMBER RPAREN .
 
@@ -851,7 +1183,7 @@ state 81
     RPAREN          reduce using rule 11 (stmt -> MOVE LPAREN NUMBER RPAREN .)
 
 
-state 82
+state 118
 
     (12) stmt -> LET_GO LPAREN NUMBER RPAREN .
 
@@ -859,7 +1191,7 @@ state 82
     RPAREN          reduce using rule 12 (stmt -> LET_GO LPAREN NUMBER RPAREN .)
 
 
-state 83
+state 119
 
     (13) stmt -> POP LPAREN NUMBER RPAREN .
 
@@ -867,7 +1199,7 @@ state 83
     RPAREN          reduce using rule 13 (stmt -> POP LPAREN NUMBER RPAREN .)
 
 
-state 84
+state 120
 
     (14) stmt -> TURN_TO_MY LPAREN ID RPAREN .
 
@@ -875,21 +1207,7 @@ state 84
     RPAREN          reduce using rule 14 (stmt -> TURN_TO_MY LPAREN ID RPAREN .)
 
 
-state 85
-
-    (22) param_list -> ID COMMA . param_list
-    (22) param_list -> . ID COMMA param_list
-    (23) param_list -> . ID
-    (24) param_list -> . empty
-    (30) empty -> .
-
-    ID              shift and go to state 62
-    RPAREN          reduce using rule 30 (empty -> .)
-
-    param_list                     shift and go to state 98
-    empty                          shift and go to state 64
-
-state 86
+state 121
 
     (18) stmt -> ID LPAREN param_list RPAREN .
 
@@ -897,7 +1215,7 @@ state 86
     RPAREN          reduce using rule 18 (stmt -> ID LPAREN param_list RPAREN .)
 
 
-state 87
+state 122
 
     (15) stmt -> GRAB LPAREN ID RPAREN .
 
@@ -905,7 +1223,7 @@ state 87
     RPAREN          reduce using rule 15 (stmt -> GRAB LPAREN ID RPAREN .)
 
 
-state 88
+state 123
 
     (16) stmt -> SAFE_EXE LPAREN stmt RPAREN .
 
@@ -913,7 +1231,7 @@ state 88
     RPAREN          reduce using rule 16 (stmt -> SAFE_EXE LPAREN stmt RPAREN .)
 
 
-state 89
+state 124
 
     (17) stmt -> MOVES LPAREN param_list RPAREN .
 
@@ -921,110 +1239,173 @@ state 89
     RPAREN          reduce using rule 17 (stmt -> MOVES LPAREN param_list RPAREN .)
 
 
-state 90
+state 125
 
-    (19) stmt -> REPEAT NUMBER TIMES block .
+    (19) stmt -> REP NUMBER TIMES block .
 
-    SEMICOLON       reduce using rule 19 (stmt -> REPEAT NUMBER TIMES block .)
-    RPAREN          reduce using rule 19 (stmt -> REPEAT NUMBER TIMES block .)
+    SEMICOLON       reduce using rule 19 (stmt -> REP NUMBER TIMES block .)
+    RPAREN          reduce using rule 19 (stmt -> REP NUMBER TIMES block .)
 
 
-state 91
+state 126
 
-    (3) program -> NEW MACRO ID LPAREN param_list RPAREN . block
-    (4) block -> . LBRACE stmt_list RBRACE
+    (21) stmt -> TURN_RIGHT LPAREN ID RPAREN .
 
-    LBRACE          shift and go to state 5
+    SEMICOLON       reduce using rule 21 (stmt -> TURN_RIGHT LPAREN ID RPAREN .)
+    RPAREN          reduce using rule 21 (stmt -> TURN_RIGHT LPAREN ID RPAREN .)
 
-    block                          shift and go to state 99
 
-state 92
+state 127
+
+    (22) stmt -> TURN_TO_THE LPAREN ID RPAREN .
+
+    SEMICOLON       reduce using rule 22 (stmt -> TURN_TO_THE LPAREN ID RPAREN .)
+    RPAREN          reduce using rule 22 (stmt -> TURN_TO_THE LPAREN ID RPAREN .)
+
+
+state 128
+
+    (23) stmt -> PICK LPAREN ID RPAREN .
+
+    SEMICOLON       reduce using rule 23 (stmt -> PICK LPAREN ID RPAREN .)
+    RPAREN          reduce using rule 23 (stmt -> PICK LPAREN ID RPAREN .)
+
+
+state 129
+
+    (24) stmt -> GOTO LPAREN ID RPAREN .
+
+    SEMICOLON       reduce using rule 24 (stmt -> GOTO LPAREN ID RPAREN .)
+    RPAREN          reduce using rule 24 (stmt -> GOTO LPAREN ID RPAREN .)
+
+
+state 130
+
+    (25) stmt -> DROP_CHIP LPAREN NUMBER RPAREN .
+
+    SEMICOLON       reduce using rule 25 (stmt -> DROP_CHIP LPAREN NUMBER RPAREN .)
+    RPAREN          reduce using rule 25 (stmt -> DROP_CHIP LPAREN NUMBER RPAREN .)
+
+
+state 131
+
+    (26) stmt -> PLACE_BALLOON LPAREN NUMBER RPAREN .
+
+    SEMICOLON       reduce using rule 26 (stmt -> PLACE_BALLOON LPAREN NUMBER RPAREN .)
+    RPAREN          reduce using rule 26 (stmt -> PLACE_BALLOON LPAREN NUMBER RPAREN .)
+
+
+state 132
+
+    (27) stmt -> GRAB_BALLOON LPAREN NUMBER RPAREN .
+
+    SEMICOLON       reduce using rule 27 (stmt -> GRAB_BALLOON LPAREN NUMBER RPAREN .)
+    RPAREN          reduce using rule 27 (stmt -> GRAB_BALLOON LPAREN NUMBER RPAREN .)
+
+
+state 133
+
+    (28) stmt -> PICKUP_CHIP LPAREN NUMBER RPAREN .
+
+    SEMICOLON       reduce using rule 28 (stmt -> PICKUP_CHIP LPAREN NUMBER RPAREN .)
+    RPAREN          reduce using rule 28 (stmt -> PICKUP_CHIP LPAREN NUMBER RPAREN .)
+
+
+state 134
+
+    (29) stmt -> POP_BALLOON LPAREN NUMBER RPAREN .
+
+    SEMICOLON       reduce using rule 29 (stmt -> POP_BALLOON LPAREN NUMBER RPAREN .)
+    RPAREN          reduce using rule 29 (stmt -> POP_BALLOON LPAREN NUMBER RPAREN .)
+
+
+state 135
+
+    (31) param_list -> ID COMMA param_list .
+
+    RPAREN          reduce using rule 31 (param_list -> ID COMMA param_list .)
+
+
+state 136
+
+    (3) program -> NEW_MACRO ID LPAREN param_list RPAREN block .
+
+    $end            reduce using rule 3 (program -> NEW_MACRO ID LPAREN param_list RPAREN block .)
+
+
+state 137
 
     (7) stmt -> IF condition THEN block ELSE . block FI
     (4) block -> . LBRACE stmt_list RBRACE
 
-    LBRACE          shift and go to state 5
+    LBRACE          shift and go to state 6
 
-    block                          shift and go to state 100
+    block                          shift and go to state 143
 
-state 93
+state 138
 
-    (25) condition -> NOT LPAREN IS_BLOCKED LPAREN . ID RPAREN RPAREN
+    (34) condition -> NOT LPAREN IS_BLOCKED LPAREN . ID RPAREN RPAREN
 
-    ID              shift and go to state 101
-
-
-state 94
-
-    (26) condition -> NOT LPAREN ZERO QUESTION . LPAREN ID RPAREN RPAREN
-
-    LPAREN          shift and go to state 102
+    ID              shift and go to state 144
 
 
-state 95
+state 139
 
-    (27) condition -> IS_BLOCKED LPAREN ID RPAREN .
+    (35) condition -> NOT LPAREN ZERO QUESTION . LPAREN ID RPAREN RPAREN
 
-    THEN            reduce using rule 27 (condition -> IS_BLOCKED LPAREN ID RPAREN .)
-
-
-state 96
-
-    (28) condition -> ZERO QUESTION LPAREN ID . RPAREN
-
-    RPAREN          shift and go to state 103
+    LPAREN          shift and go to state 145
 
 
-state 97
+state 140
 
-    (29) condition -> IS_FACING LPAREN ID RPAREN .
+    (36) condition -> IS_BLOCKED LPAREN ID RPAREN .
 
-    THEN            reduce using rule 29 (condition -> IS_FACING LPAREN ID RPAREN .)
-
-
-state 98
-
-    (22) param_list -> ID COMMA param_list .
-
-    RPAREN          reduce using rule 22 (param_list -> ID COMMA param_list .)
+    THEN            reduce using rule 36 (condition -> IS_BLOCKED LPAREN ID RPAREN .)
 
 
-state 99
+state 141
 
-    (3) program -> NEW MACRO ID LPAREN param_list RPAREN block .
+    (37) condition -> ZERO QUESTION LPAREN ID . RPAREN
 
-    $end            reduce using rule 3 (program -> NEW MACRO ID LPAREN param_list RPAREN block .)
+    RPAREN          shift and go to state 146
 
 
-state 100
+state 142
+
+    (38) condition -> IS_FACING LPAREN ID RPAREN .
+
+    THEN            reduce using rule 38 (condition -> IS_FACING LPAREN ID RPAREN .)
+
+
+state 143
 
     (7) stmt -> IF condition THEN block ELSE block . FI
 
-    FI              shift and go to state 104
+    FI              shift and go to state 147
 
 
-state 101
+state 144
 
-    (25) condition -> NOT LPAREN IS_BLOCKED LPAREN ID . RPAREN RPAREN
+    (34) condition -> NOT LPAREN IS_BLOCKED LPAREN ID . RPAREN RPAREN
 
-    RPAREN          shift and go to state 105
-
-
-state 102
-
-    (26) condition -> NOT LPAREN ZERO QUESTION LPAREN . ID RPAREN RPAREN
-
-    ID              shift and go to state 106
+    RPAREN          shift and go to state 148
 
 
-state 103
+state 145
 
-    (28) condition -> ZERO QUESTION LPAREN ID RPAREN .
+    (35) condition -> NOT LPAREN ZERO QUESTION LPAREN . ID RPAREN RPAREN
 
-    THEN            reduce using rule 28 (condition -> ZERO QUESTION LPAREN ID RPAREN .)
+    ID              shift and go to state 149
 
 
-state 104
+state 146
+
+    (37) condition -> ZERO QUESTION LPAREN ID RPAREN .
+
+    THEN            reduce using rule 37 (condition -> ZERO QUESTION LPAREN ID RPAREN .)
+
+
+state 147
 
     (7) stmt -> IF condition THEN block ELSE block FI .
 
@@ -1032,37 +1413,37 @@ state 104
     RPAREN          reduce using rule 7 (stmt -> IF condition THEN block ELSE block FI .)
 
 
-state 105
+state 148
 
-    (25) condition -> NOT LPAREN IS_BLOCKED LPAREN ID RPAREN . RPAREN
+    (34) condition -> NOT LPAREN IS_BLOCKED LPAREN ID RPAREN . RPAREN
 
-    RPAREN          shift and go to state 107
-
-
-state 106
-
-    (26) condition -> NOT LPAREN ZERO QUESTION LPAREN ID . RPAREN RPAREN
-
-    RPAREN          shift and go to state 108
+    RPAREN          shift and go to state 150
 
 
-state 107
+state 149
 
-    (25) condition -> NOT LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN .
+    (35) condition -> NOT LPAREN ZERO QUESTION LPAREN ID . RPAREN RPAREN
 
-    THEN            reduce using rule 25 (condition -> NOT LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN .)
-
-
-state 108
-
-    (26) condition -> NOT LPAREN ZERO QUESTION LPAREN ID RPAREN . RPAREN
-
-    RPAREN          shift and go to state 109
+    RPAREN          shift and go to state 151
 
 
-state 109
+state 150
 
-    (26) condition -> NOT LPAREN ZERO QUESTION LPAREN ID RPAREN RPAREN .
+    (34) condition -> NOT LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN .
 
-    THEN            reduce using rule 26 (condition -> NOT LPAREN ZERO QUESTION LPAREN ID RPAREN RPAREN .)
+    THEN            reduce using rule 34 (condition -> NOT LPAREN IS_BLOCKED LPAREN ID RPAREN RPAREN .)
+
+
+state 151
+
+    (35) condition -> NOT LPAREN ZERO QUESTION LPAREN ID RPAREN . RPAREN
+
+    RPAREN          shift and go to state 152
+
+
+state 152
+
+    (35) condition -> NOT LPAREN ZERO QUESTION LPAREN ID RPAREN RPAREN .
+
+    THEN            reduce using rule 35 (condition -> NOT LPAREN ZERO QUESTION LPAREN ID RPAREN RPAREN .)
 

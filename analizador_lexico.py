@@ -3,13 +3,14 @@ import ply.yacc as yacc
 import os
 
 #LISTA DE TOKENS.
-tokens = ['MOVE','TURN_RIGHT' ,'DROP_CHIP' ,'PLACE_BALLOON' ,'PICKUP_CHIP' ,'GRAB_BALLOON' ,'POP_BALLOON' , 'GOTO' ,'NEW_VAR' ,'NUMBER', 'ID','EQUALS' ,'NEW_MACRO', 
-          'ASSIGN', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'SEMICOLON', 'COMMA', 'PLUS', 'QUESTION', 'REPEAT']
+tokens = ['MOVE','TURN_RIGHT' ,'DROP_CHIP' ,'PLACE_BALLOON' ,'PICKUP_CHIP' ,'GRAB_BALLOON' ,'POP_BALLOON' , 'GOTO' ,'NEW_VAR' ,'NUMBER', 'ID','NEW_MACRO', 
+          'ASSIGN', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'SEMICOLON', 'COMMA', 'QUESTION']
  
 #PALABRAS RESERVADAS.
-reserved = {'exec': 'EXEC', 'new': 'NEW', 'var': 'VAR', 'macro': 'MACRO', 'if': 'IF', 'then': 'THEN', 'else': 'ELSE', 'fi': 'FI', 'do': 'DO', 'od': 'OD', 'rep': 'REP', 'times': 'TIMES',
+reserved = {'exec': 'EXEC', 'if': 'IF', 'then': 'THEN', 'else': 'ELSE', 'fi': 'FI', 'do': 'DO', 'od': 'OD', 'rep': 'REP', 'times': 'TIMES',
             'turntomy': 'TURN_TO_MY', 'turntothe': 'TURN_TO_THE', 'walk': 'WALK', 'jump': 'JUMP', 'drop': 'DROP', 'pick': 'PICK', 'grab': 'GRAB', 'letgo': 'LET_GO', 'pop': 'POP', 'moves': 'MOVES',
-            'nop': 'NOP', 'safeexe': 'SAFE_EXE', 'isblocked': 'IS_BLOCKED', 'isfacing': 'IS_FACING', 'zero': 'ZERO', 'not': 'NOT'}
+            'nop': 'NOP', 'safeexe': 'SAFE_EXE', 'isblocked': 'IS_BLOCKED', 'isfacing': 'IS_FACING', 'zero': 'ZERO', 'not': 'NOT', 'size': 'SIZE', 'myx': 'MYX', 'myy': 'MYY', 'mychips': 'MYCHIPS',
+            'myballoons': 'MYBALLOONS', 'balloonshere': 'BALLOONSHERE', 'chipshere': 'CHIPSHERE', 'roomforchips': 'ROOMFORCHIPS'}
 
 tokens = tokens + list(reserved.values())
 
@@ -55,7 +56,12 @@ def t_NUMBER(t):
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     t.value = t.value.lower()
-    t.type = reserved.get(t.value, 'ID')
+    if t.value in reserved:
+        t.type = reserved[t.value]
+    else:
+        print('Error: Id descnocido {0} en la linea {1}'.format(t.value, t.lexer.lineno))
+        t.type = 'ID'
+            
     return t
 
 #Ignorar comentarios.
@@ -82,11 +88,11 @@ def p_program_exec(p):
     pass
 
 def p_program_new_var(p):
-    '''program : NEW VAR ID ASSIGN NUMBER'''
+    '''program : NEW_VAR ID ASSIGN NUMBER'''
     pass
 
 def p_program_new_macro(p):
-    '''program : NEW MACRO ID LPAREN param_list RPAREN block'''
+    '''program : NEW_MACRO ID LPAREN param_list RPAREN block'''
     pass
 
 def p_block(p):
@@ -111,8 +117,17 @@ def p_stmt(p):
             | SAFE_EXE LPAREN stmt RPAREN
             | MOVES LPAREN param_list RPAREN
             | ID LPAREN param_list RPAREN
-            | REPEAT NUMBER TIMES block
-            | NOP'''
+            | REP NUMBER TIMES block
+            | NOP
+            | TURN_RIGHT LPAREN ID RPAREN
+            | TURN_TO_THE LPAREN ID RPAREN
+            | PICK LPAREN ID RPAREN
+            | GOTO LPAREN ID RPAREN
+            | DROP_CHIP LPAREN NUMBER RPAREN
+            | PLACE_BALLOON LPAREN NUMBER RPAREN
+            | GRAB_BALLOON LPAREN NUMBER RPAREN
+            | PICKUP_CHIP LPAREN NUMBER RPAREN
+            | POP_BALLOON LPAREN NUMBER RPAREN'''
     pass
 
 def p_stmt_do_while(p):
@@ -130,7 +145,15 @@ def p_condition(p):
                  | NOT LPAREN ZERO QUESTION LPAREN ID RPAREN RPAREN
                  | IS_BLOCKED LPAREN ID RPAREN
                  | ZERO QUESTION LPAREN ID RPAREN
-                 | IS_FACING LPAREN ID RPAREN'''
+                 | IS_FACING LPAREN ID RPAREN
+                 | SIZE
+                 | MYX
+                 | MYY 
+                 | MYCHIPS
+                 | MYBALLOONS
+                 | BALLOONSHERE
+                 | CHIPSHERE
+                 | ROOMFORCHIPS'''
     pass
 
 def p_empty(p):
